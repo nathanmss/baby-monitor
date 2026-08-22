@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1e2942"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </radialGradient>
+    <radialGradient id="glowGrad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#fad4a1"/>
+      <stop offset="60%" stop-color="#f6c177"/>
+      <stop offset="100%" stop-color="#e5a84d"/>
+    </radialGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  
+  <!-- Background rounded box -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+  
+  <!-- Outer glowing rings -->
+  <circle cx="256" cy="240" r="150" fill="none" stroke="#f6c177" stroke-width="6" stroke-opacity="0.2" stroke-dasharray="12 8"/>
+  <circle cx="256" cy="240" r="180" fill="none" stroke="#9ccfd8" stroke-width="4" stroke-opacity="0.15"/>
+  
+  <!-- Center Glowing Orb (Baby Head / Camera Lens) -->
+  <circle cx="256" cy="240" r="96" fill="url(#glowGrad)" filter="url(#glow)"/>
+  
+  <!-- Cute Sleeping Baby Face / Icon Detail inside Orb -->
+  <!-- Left Eye closed arc -->
+  <path d="M 216 230 Q 228 245 240 230" fill="none" stroke="#0a0e1a" stroke-width="6" stroke-linecap="round"/>
+  <!-- Right Eye closed arc -->
+  <path d="M 272 230 Q 284 245 296 230" fill="none" stroke="#0a0e1a" stroke-width="6" stroke-linecap="round"/>
+  <!-- Gentle Smile -->
+  <path d="M 244 260 Q 256 272 268 260" fill="none" stroke="#0a0e1a" stroke-width="5" stroke-linecap="round"/>
+  <!-- Soft Blush -->
+  <circle cx="210" cy="248" r="8" fill="#ebbcba" opacity="0.6"/>
+  <circle cx="302" cy="248" r="8" fill="#ebbcba" opacity="0.6"/>
+  
+  <!-- Wireless signal waves at the top -->
+  <path d="M 200 110 Q 256 70 312 110" fill="none" stroke="#9ccfd8" stroke-width="8" stroke-linecap="round" opacity="0.85"/>
+  <path d="M 224 135 Q 256 105 288 135" fill="none" stroke="#f6c177" stroke-width="8" stroke-linecap="round" opacity="0.95"/>
+  
+  <!-- Small Star sparkle -->
+  <path d="M 370 160 Q 385 160 385 145 Q 385 160 400 160 Q 385 160 385 175 Q 385 160 370 160" fill="#fad4a1"/>
+  <path d="M 120 300 Q 130 300 130 290 Q 130 300 140 300 Q 130 300 130 310 Q 130 300 120 300" fill="#9ccfd8" opacity="0.8"/>
+  
+  <!-- App Label Pill bottom -->
+  <rect x="146" y="380" width="220" height="48" rx="24" fill="#141b2d" stroke="#f6c177" stroke-width="2" stroke-opacity="0.3"/>
+  <text x="256" y="411" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#fad4a1" text-anchor="middle" letter-spacing="2">BABY MONITOR</text>
+</svg>

@@ -1,25 +1,32 @@
 {
   "name": "baby-monitor",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Real-time baby monitor using WebRTC with SSE signaling and PWA support",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "playwright test",
+    "test:headed": "playwright test --headed"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/felschatz/baby-monitor.git"
+    "url": "git+https://github.com/nathanmss/baby-monitor.git"
   },
-  "keywords": [],
+  "keywords": [
+    "webrtc",
+    "baby-monitor",
+    "pwa",
+    "video-streaming",
+    "audio-streaming",
+    "pt-br"
+  ],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/felschatz/baby-monitor/issues"
-  },
-  "homepage": "https://github.com/felschatz/baby-monitor#readme",
   "dependencies": {
     "@roamhq/wrtc": "^0.10.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
   }
 }

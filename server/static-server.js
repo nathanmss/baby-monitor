@@ -8,7 +8,7 @@ const fs = require('fs');
 const { MIME_TYPES } = require('./utils');
 
 /**
- * Send file response
+ * Send file response with security headers
  * @param {http.ServerResponse} res
  * @param {string} filePath
  */
@@ -19,18 +19,31 @@ function sendFile(res, filePath) {
 
     fs.readFile(filePath, (err, data) => {
         if (err) {
-            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.writeHead(404, {
+                'Content-Type': 'text/plain; charset=utf-8',
+                'X-Content-Type-Options': 'nosniff'
+            });
             res.end('Not Found');
             return;
         }
 
-        // Set cache headers - no caching for JS/CSS during development
-        const headers = { 'Content-Type': contentType };
-        if (ext === '.js' || ext === '.css') {
+        const headers = {
+            'Content-Type': contentType,
+            'X-Content-Type-Options': 'nosniff',
+            'X-Frame-Options': 'SAMEORIGIN',
+            'Referrer-Policy': 'strict-origin-when-cross-origin'
+        };
+
+        // Cache control
+        if (ext === '.html' || ext === '.js' || ext === '.css' || ext === '.webmanifest') {
             headers['Cache-Control'] = 'no-cache, must-revalidate';
+        } else {
+            headers['Cache-Control'] = 'public, max-age=86400';
         }
-        if (basename === 'sender-offline-sw.js') {
+
+        if (basename === 'sender-offline-sw.js' || basename === 'sw.js') {
             headers['Service-Worker-Allowed'] = '/';
+            headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
         }
 
         res.writeHead(200, headers);
@@ -51,7 +64,7 @@ function serveStatic(res, basePath, urlPath) {
     try {
         decodedPath = decodeURIComponent(urlPath);
     } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8', 'X-Content-Type-Options': 'nosniff' });
         res.end('Bad Request');
         return true;
     }
@@ -62,7 +75,7 @@ function serveStatic(res, basePath, urlPath) {
 
     // Ensure the resolved path is within the base directory
     if (!filePath.startsWith(basePath)) {
-        res.writeHead(403, { 'Content-Type': 'text/plain' });
+        res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8', 'X-Content-Type-Options': 'nosniff' });
         res.end('Forbidden');
         return true;
     }
@@ -99,7 +112,7 @@ function serveMp3(res, pathname, baseDir) {
     // Security: ensure path is within mp3 directory
     const normalizedPath = path.normalize(filePath);
     if (!normalizedPath.startsWith(mp3Base)) {
-        res.writeHead(403, { 'Content-Type': 'text/plain' });
+        res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8', 'X-Content-Type-Options': 'nosniff' });
         res.end('Forbidden');
         return true;
     }

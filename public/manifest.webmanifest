@@ -1,0 +1,49 @@
+{
+  "name": "Babá Eletrônica - Baby Monitor",
+  "short_name": "Babá Eletrônica",
+  "description": "Transmissão de áudio e vídeo em tempo real entre celulares para monitoramento de bebês.",
+  "start_url": "/start.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0e1a",
+  "theme_color": "#0a0e1a",
+  "lang": "pt-BR",
+  "categories": ["utilities", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Celular do Bebê (Câmera)",
+      "short_name": "Câmera",
+      "description": "Abrir câmera do quarto do bebê",
+      "url": "/sender",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Monitor dos Pais",
+      "short_name": "Monitor",
+      "description": "Abrir visualizador dos pais",
+      "url": "/receiver",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
+    }
+  ]
+}

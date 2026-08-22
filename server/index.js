@@ -4,10 +4,11 @@
  */
 
 const http = require('http');
+const https = require('https');
 const path = require('path');
 const fs = require('fs');
 
-const { matchRoute, sendJson } = require('./utils');
+const { matchRoute, sendJson, isValidSessionName } = require('./utils');
 const { getAllSessions } = require('./session-manager');
 const { handleSenderSSE, handleReceiverSSE } = require('./sse-manager');
 const { handleSignal } = require('./signal-router');
@@ -41,19 +42,22 @@ function loadEnv(baseDir) {
 
     return {
         ENABLE_DEBUG_TIMER: process.env.ENABLE_DEBUG_TIMER === 'true',
-        PORT: process.env.PORT || 3000
+        PORT: parseInt(process.env.PORT || '3000', 10),
+        SSL_KEY: process.env.SSL_KEY,
+        SSL_CERT: process.env.SSL_CERT,
+        HTTPS: process.env.HTTPS === 'true'
     };
 }
 
 /**
- * Create and configure the HTTP server
+ * Create and configure the HTTP/HTTPS server
  * @param {string} baseDir - Base directory of the application
- * @returns {http.Server}
+ * @returns {{ server: http.Server | https.Server, config: object, isHttps: boolean }}
  */
 function createServer(baseDir) {
     const config = loadEnv(baseDir);
 
-    const server = http.createServer(async (req, res) => {
+    const requestHandler = async (req, res) => {
         const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
         const pathname = parsedUrl.pathname;
         const query = Object.fromEntries(parsedUrl.searchParams);
@@ -64,18 +68,27 @@ function createServer(baseDir) {
             // SSE sender endpoint
             let params = matchRoute('/api/sse/sender/:session', pathname);
             if (params) {
+                if (!isValidSessionName(params.session)) {
+                    return sendJson(res, { error: 'Invalid session name' }, 400);
+                }
                 return handleSenderSSE(req, res, params.session, query.transport);
             }
 
             // SSE receiver endpoint
             params = matchRoute('/api/sse/receiver/:session', pathname);
             if (params) {
+                if (!isValidSessionName(params.session)) {
+                    return sendJson(res, { error: 'Invalid session name' }, 400);
+                }
                 return handleReceiverSSE(req, res, params.session);
             }
 
             // Session status endpoint
             params = matchRoute('/api/status/:session', pathname);
             if (params) {
+                if (!isValidSessionName(params.session)) {
+                    return sendJson(res, { error: 'Invalid session name' }, 400);
+                }
                 const sessions = getAllSessions();
                 const session = sessions.get(params.session);
                 return sendJson(res, {
@@ -114,6 +127,10 @@ function createServer(baseDir) {
                 return sendFile(res, path.join(baseDir, 'public', 'index.html'));
             }
 
+            if (pathname === '/start' || pathname === '/start.html') {
+                return sendFile(res, path.join(baseDir, 'public', 'start.html'));
+            }
+
             if (pathname === '/sender' || pathname === '/sender.html') {
                 return sendFile(res, path.join(baseDir, 'public', 'sender.html'));
             }
@@ -122,15 +139,30 @@ function createServer(baseDir) {
                 return sendFile(res, path.join(baseDir, 'public', 'receiver.html'));
             }
 
-            // Session URLs
+            // Session URLs (/s/:session -> sender, /r/:session -> receiver)
             params = matchRoute('/s/:session', pathname);
             if (params) {
+                if (!isValidSessionName(params.session)) {
+                    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+                    res.end('Invalid session name');
+                    return;
+                }
                 return sendFile(res, path.join(baseDir, 'public', 'sender.html'));
             }
 
             params = matchRoute('/r/:session', pathname);
             if (params) {
+                if (!isValidSessionName(params.session)) {
+                    res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+                    res.end('Invalid session name');
+                    return;
+                }
                 return sendFile(res, path.join(baseDir, 'public', 'receiver.html'));
+            }
+
+            // Manifest route shortcut
+            if (pathname === '/manifest.json' || pathname === '/manifest.webmanifest') {
+                return sendFile(res, path.join(baseDir, 'public', 'manifest.webmanifest'));
             }
 
             // Static files from /mp3
@@ -144,7 +176,7 @@ function createServer(baseDir) {
             }
 
             // 404 for unmatched GET requests
-            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8', 'X-Content-Type-Options': 'nosniff' });
             res.end('Not Found');
             return;
         }
@@ -156,17 +188,37 @@ function createServer(baseDir) {
             }
 
             // 404 for unmatched POST requests
-            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8', 'X-Content-Type-Options': 'nosniff' });
             res.end('Not Found');
             return;
         }
 
         // Method not allowed
-        res.writeHead(405, { 'Content-Type': 'text/plain' });
+        res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', 'X-Content-Type-Options': 'nosniff' });
         res.end('Method Not Allowed');
-    });
+    };
 
-    return { server, config };
+    let server;
+    let isHttps = false;
+
+    // Check for HTTPS configuration
+    if (config.SSL_KEY && config.SSL_CERT && fs.existsSync(config.SSL_KEY) && fs.existsSync(config.SSL_CERT)) {
+        try {
+            const httpsOptions = {
+                key: fs.readFileSync(config.SSL_KEY),
+                cert: fs.readFileSync(config.SSL_CERT)
+            };
+            server = https.createServer(httpsOptions, requestHandler);
+            isHttps = true;
+        } catch (e) {
+            console.warn('Failed to load SSL certificates, falling back to HTTP:', e.message);
+            server = http.createServer(requestHandler);
+        }
+    } else {
+        server = http.createServer(requestHandler);
+    }
+
+    return { server, config, isHttps };
 }
 
 /**
@@ -174,20 +226,33 @@ function createServer(baseDir) {
  * @param {string} baseDir - Base directory of the application
  */
 function startServer(baseDir) {
-    const { server, config } = createServer(baseDir);
+    const { server, config, isHttps } = createServer(baseDir);
+    const protocol = isHttps ? 'https' : 'http';
 
-    server.listen(config.PORT, () => {
-        console.log(`Baby Monitor server running on port ${config.PORT}`);
-        console.log(`Open http://localhost:${config.PORT} in your browser`);
+    server.listen(config.PORT, '0.0.0.0', () => {
+        console.log(`Baby Monitor server running at ${protocol}://0.0.0.0:${config.PORT}`);
+        console.log(`Local address: ${protocol}://localhost:${config.PORT}`);
         console.log('Using SSE for signaling (no WebSockets required)');
-        console.log('Pure Node.js HTTP server with optional server-side WebRTC relay');
+        console.log('Pure Node.js server with optional server-side WebRTC relay');
 
         if (isRelayAvailable()) {
-            console.log('Relay mode available via server-side WebRTC');
+            console.log('Relay mode available via server-side WebRTC (@roamhq/wrtc)');
         } else {
             console.log('Relay mode unavailable:', getRelayError() || 'server relay dependency missing');
         }
     });
+
+    // Graceful shutdown
+    const shutdown = () => {
+        console.log('Stopping server...');
+        server.close(() => {
+            console.log('Server stopped cleanly.');
+            process.exit(0);
+        });
+    };
+
+    process.on('SIGTERM', shutdown);
+    process.on('SIGINT', shutdown);
 
     return server;
 }
@@ -197,8 +262,3 @@ module.exports = {
     createServer,
     startServer
 };
-
-// Run if executed directly
-if (require.main === module) {
-    startServer(__dirname.replace(/[\/\\]server$/, ''));
-}

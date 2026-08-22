@@ -1,55 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Baby Monitor - Sender</title>
+    <title data-i18n="sender.title">Babá Eletrônica - Câmera do Bebê</title>
+    
+    <!-- PWA & Mobile Meta Tags -->
+    <meta name="theme-color" content="#0a0e1a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+    <link rel="apple-touch-icon" href="/icons/icon.svg">
+
     <link rel="stylesheet" href="/sender.css">
 </head>
 <body>
     <!-- Session prompt overlay -->
     <div class="session-overlay" id="sessionOverlay">
         <div class="session-prompt">
-            <h2>Enter Session Name</h2>
-            <p>Use a unique name to connect sender and receiver</p>
-            <input type="text" id="sessionInput" placeholder="e.g., felix-baby" autocomplete="off" autocapitalize="none">
-            <button class="btn btn-start" id="sessionJoinBtn">Join Session</button>
-            <p class="session-hint">Bookmark the URL after joining for easy daily access</p>
+            <h2 data-i18n="sender.prompt_title">Digite o Nome da Sessão</h2>
+            <p data-i18n="sender.prompt_desc">Use um nome único para conectar a câmera ao monitor dos pais</p>
+            <input type="text" id="sessionInput" data-i18n-placeholder="start.session_placeholder" placeholder="ex: quarto-bebe, felix-baby" autocomplete="off" autocapitalize="none">
+            <button class="btn btn-start" id="sessionJoinBtn" data-i18n="sender.join_btn">Entrar na Sessão</button>
+            <p class="session-hint" data-i18n="sender.prompt_hint">Salve o link nos favoritos após entrar para acesso direto diário</p>
         </div>
     </div>
 
     <!-- Screen off overlay -->
     <div class="screen-off-overlay" id="screenOffOverlay">
-        <div class="tap-hint">Tap to wake</div>
+        <div class="tap-hint" data-i18n="sender.tap_to_wake">Toque para ativar a tela</div>
     </div>
 
     <!-- Dim countdown indicator -->
     <div class="dim-indicator" id="dimIndicator">
-        Screen dimming soon...
+        <span data-i18n="sender.dimming_soon">A tela vai escurecer em breve...</span>
         <div class="countdown-bar" id="countdownBar"></div>
     </div>
 
     <div class="header">
-        <a href="/" class="back-link">←</a>
-        <h2>Baby's Phone</h2>
+        <a href="/" class="back-link" title="Voltar">←</a>
+        <h2 data-i18n="sender.header_title">Câmera do Bebê</h2>
         <div class="status-indicator">
             <div class="status-dot" id="statusDot"></div>
-            <span id="statusText">Disconnected</span>
+            <span id="statusText" data-i18n="sender.disconnected">Desconectado</span>
             <span class="quality-badge" id="qualityBadge"></span>
         </div>
     </div>
 
     <!-- Status bar for PTT and Music -->
     <div class="status-bar" id="statusBar">
-        <div class="status-bar-item ptt-status" id="pttStatus">👂 Parent is speaking...</div>
+        <div class="status-bar-item ptt-status" id="pttStatus" data-i18n="sender.parent_speaking">👂 Os pais estão falando...</div>
         <div class="status-bar-item music-status" id="musicStatusBar">
             <span class="status-bar-icon">🎵</span>
-            <span class="status-bar-text" id="musicTrackName">Playing...</span>
+            <span class="status-bar-text" id="musicTrackName" data-i18n="sender.playing_music">Tocando...</span>
             <span class="status-bar-timer" id="musicTimer"></span>
         </div>
         <div class="status-bar-item shutdown-status" id="shutdownStatusBar">
             <span class="status-bar-icon">🌙</span>
-            <span class="status-bar-text" id="shutdownTimeRemaining">Shutting down in...</span>
+            <span class="status-bar-text" id="shutdownTimeRemaining">Desligamento em...</span>
         </div>
     </div>
 
@@ -69,14 +79,14 @@
             <select class="music-playlist-select" id="musicPlaylistSelect" title="Select playlist"></select>
             <select class="music-timer-select" id="musicTimerSelect">
                 <option value="45">45 min</option>
-                <option value="60">1 hour</option>
-                <option value="105" selected>1:45</option>
-                <option value="120">2 hours</option>
+                <option value="60">1 hora</option>
+                <option value="105" selected>1h 45m</option>
+                <option value="120">2 horas</option>
             </select>
-            <button class="music-reset-btn" id="musicResetBtn" style="display: none;">Reset</button>
+            <button class="music-reset-btn" id="musicResetBtn" style="display: none;" data-i18n="sender.reset">Reiniciar</button>
         </div>
         <div class="music-volume-row">
-            <button class="volume-btn volume-minus" id="volumeMinus" aria-label="Decrease volume">−</button>
+            <button class="volume-btn volume-minus" id="volumeMinus" aria-label="Diminuir volume">−</button>
             <div class="volume-slider-container" id="volumeSliderContainer">
                 <input type="range" id="musicVolume" min="0" max="100" value="50">
                 <div class="volume-track-fill" id="volumeTrackFill"></div>
@@ -84,39 +94,38 @@
                 <div class="volume-thumb-enlarged" id="volumeThumbEnlarged"></div>
                 <div class="volume-tooltip" id="volumeTooltip">50%</div>
             </div>
-            <button class="volume-btn volume-plus" id="volumePlus" aria-label="Increase volume">+</button>
+            <button class="volume-btn volume-plus" id="volumePlus" aria-label="Aumentar volume">+</button>
         </div>
-        <div class="music-label" id="musicLabel">Play lullabies</div>
+        <div class="music-label" id="musicLabel" data-i18n="sender.play_lullabies">Tocar canções de ninar</div>
     </div>
 
     <div class="controls">
         <div class="options" id="optionsPanel">
             <label class="option">
                 <input type="checkbox" id="enableVideo" checked>
-                <span>Video</span>
+                <span data-i18n="sender.opt_video">Vídeo</span>
             </label>
             <label class="option">
                 <input type="checkbox" id="enableAudio" checked>
-                <span>Audio</span>
+                <span data-i18n="sender.opt_audio">Áudio</span>
             </label>
         </div>
 
         <div class="streaming-status" id="streamingStatus" style="display: none;">
-            <span class="status-label">Sending:</span>
-            <span class="status-value" id="streamingStatusValue">Video + Audio</span>
+            <span class="status-label" data-i18n="sender.streaming_label">Transmitindo:</span>
+            <span class="status-value" id="streamingStatusValue">Vídeo + Áudio</span>
         </div>
 
         <div class="audio-meter">
             <div class="audio-level" id="audioLevel"></div>
         </div>
 
-        <button class="btn btn-start" id="startBtn">Start Streaming</button>
-        <button class="btn btn-stop" id="stopBtn" style="display: none;">Stop Streaming</button>
+        <button class="btn btn-start" id="startBtn" data-i18n="sender.start_btn">Iniciar Transmissão</button>
+        <button class="btn btn-stop" id="stopBtn" style="display: none;" data-i18n="sender.stop_btn">Parar Transmissão</button>
 
-        <div class="info" id="info">
-            Click "Start Streaming" to begin broadcasting
+        <div class="info" id="info" data-i18n="sender.info_ready">
+            Clique em "Iniciar Transmissão" para começar
         </div>
-        <div class="wisdom-subtle" id="senderWisdom">Wisdom - Apr 29, 2026: Good preparation works quietly in the background.</div>
     </div>
 
     <script type="module" src="/js/sender-app.js"></script>

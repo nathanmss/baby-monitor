@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baby Monitor - Free Open Source WebRTC Baby Monitor</title>
+    <title data-i18n="app.title">Babá Eletrônica - Free Open Source WebRTC Baby Monitor</title>
     <meta name="description" content="Turn any two phones into a baby monitor. Real-time HD video & audio streaming with no app required. Free, open source, and privacy-focused.">
+    
+    <!-- PWA & Mobile Meta Tags -->
+    <meta name="theme-color" content="#0a0e1a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+    <link rel="apple-touch-icon" href="/icons/icon.svg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -87,6 +97,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 1.5rem;
         }
 
         .logo {
@@ -116,7 +127,7 @@
 
         .nav-links {
             display: flex;
-            gap: 2.5rem;
+            gap: 2rem;
             align-items: center;
         }
 
@@ -162,6 +173,52 @@
         .nav-cta:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 20px rgba(246, 193, 119, 0.4);
+        }
+
+        /* Language Switcher */
+        .lang-switcher {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(30, 41, 66, 0.6);
+            border: 1px solid rgba(246, 193, 119, 0.2);
+            border-radius: 100px;
+            padding: 2px;
+            gap: 2px;
+        }
+
+        .lang-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: transparent;
+            border: none;
+            border-radius: 100px;
+            padding: 3px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active {
+            background: var(--glow);
+            color: var(--night);
+            box-shadow: 0 2px 8px rgba(246, 193, 119, 0.3);
+        }
+
+        .lang-btn:not(.active):hover {
+            color: var(--text);
+        }
+
+        .lang-flag {
+            font-size: 0.85rem;
+            line-height: 1;
+        }
+
+        .lang-text {
+            font-size: 0.7rem;
+            letter-spacing: 0.05em;
         }
 
         /* Hero Section */
@@ -372,7 +429,6 @@
             padding: 2rem;
         }
 
-        /* Glow behind phones */
         .phone-glow {
             position: absolute;
             top: 50%;
@@ -1238,14 +1294,15 @@
         <div class="nav-container">
             <a href="/" class="logo">
                 <div class="logo-icon"></div>
-                Baby Monitor
+                <span data-i18n="app.title">Babá Eletrônica</span>
             </a>
             <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="#open-source">Open Source</a>
-                <a href="https://github.com/felschatz/baby-monitor" target="_blank" rel="noopener">GitHub</a>
-                <a href="/start.html" class="nav-cta">Get Started</a>
+                <a href="#features" data-i18n="nav.features">Recursos</a>
+                <a href="#how-it-works" data-i18n="nav.how_it_works">Como Funciona</a>
+                <a href="#open-source" data-i18n="open.label">Código Aberto</a>
+                <a href="https://github.com/felschatz/baby-monitor" target="_blank" rel="noopener" data-i18n="nav.github">GitHub</a>
+                <div id="navLangSwitcher" class="lang-switcher-auto"></div>
+                <a href="/start.html" class="nav-cta" data-i18n="nav.get_started">Começar Agora</a>
             </div>
             <button class="mobile-menu-btn" aria-label="Menu">
                 <span></span>
@@ -1259,13 +1316,13 @@
     <section class="hero">
         <div class="hero-container">
             <div class="hero-content">
-                <div class="hero-eyebrow">Free & Open Source</div>
-                <h1>Turn Any Two Phones Into a Baby Monitor</h1>
-                <p>Real-time HD video and audio streaming. No apps to download, no accounts to create, no monthly fees. Just open your browser and connect.</p>
+                <div class="hero-eyebrow" data-i18n="hero.badge">100% Gratuito & Open Source</div>
+                <h1 data-i18n="hero.title">Transforme celulares antigos em uma babá eletrônica inteligente</h1>
+                <p data-i18n="hero.desc">Transmissão direta de vídeo e áudio em alta definição com baixíssima latência entre dispositivos. Sem criar conta, sem intermediários e com total privacidade.</p>
 
                 <div class="hero-buttons">
                     <a href="/start.html" class="btn btn-primary">
-                        Start Monitoring
+                        <span data-i18n="hero.cta_start">Usar Agora</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
@@ -1274,22 +1331,22 @@
                         <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
                         </svg>
-                        View Source
+                        <span data-i18n="open.button">Ver no GitHub</span>
                     </a>
                 </div>
 
                 <div class="hero-stats">
                     <div class="stat">
-                        <span class="stat-value">0</span>
-                        <span class="stat-label">Dependencies</span>
+                        <span class="stat-value" data-i18n="hero.stat_latency">&lt; 200ms</span>
+                        <span class="stat-label" data-i18n="hero.stat_latency_label">Baixa Latência</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-value">P2P</span>
-                        <span class="stat-label">Direct Streaming</span>
+                        <span class="stat-value" data-i18n="hero.stat_privacy">100%</span>
+                        <span class="stat-label" data-i18n="hero.stat_privacy_label">Privado (P2P)</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-value">MIT</span>
-                        <span class="stat-label">License</span>
+                        <span class="stat-value" data-i18n="hero.stat_price">R$ 0</span>
+                        <span class="stat-label" data-i18n="hero.stat_price_label">Gratuito Sempre</span>
                     </div>
                 </div>
             </div>
@@ -1308,8 +1365,8 @@
                                             <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
                                         </svg>
                                     </div>
-                                    <span class="phone-label">Sender</span>
-                                    <span class="phone-status">Recording</span>
+                                    <span class="phone-label" data-i18n="hero.sender_phone">Celular do Bebê</span>
+                                    <span class="phone-status" data-i18n="hero.streaming_live">Ao vivo</span>
                                 </div>
                             </div>
                         </div>
@@ -1335,8 +1392,8 @@
                                             </svg>
                                         </div>
                                     </div>
-                                    <span class="phone-label">Receiver</span>
-                                    <span class="phone-status">Connected</span>
+                                    <span class="phone-label" data-i18n="hero.receiver_phone">Monitor dos Pais</span>
+                                    <span class="phone-status" data-i18n="sender.connected">Conectado</span>
                                 </div>
                             </div>
                         </div>
@@ -1350,64 +1407,64 @@
     <section class="features" id="features">
         <div class="section-container">
             <div class="section-header">
-                <span class="section-label">Features</span>
-                <h2>Everything You Need, Nothing You Don't</h2>
-                <p>Built for simplicity and reliability. No bloat, just rock-solid baby monitoring.</p>
+                <span class="section-label" data-i18n="features.section_label">Recursos</span>
+                <h2 data-i18n="features.section_title">Tudo o que você precisa para a segurança do bebê</h2>
+                <p data-i18n="features.section_desc">Desenvolvido por pais e para pais, com foco em estabilidade, privacidade e simplicidade.</p>
             </div>
 
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="feature-icon">📺</div>
-                    <h3>HD Video Streaming</h3>
-                    <p>Crystal clear 720p video with adaptive quality. Switch to SD for slower connections.</p>
+                    <h3 data-i18n="features.webrtc_title">Transmissão em Tempo Real</h3>
+                    <p data-i18n="features.webrtc_desc">Vídeo e áudio diretos de ponta a ponta com baixíssima latência via WebRTC.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">🔊</div>
-                    <h3>Loud Sound Alerts</h3>
-                    <p>Instant visual alerts when your baby cries. Adjustable sensitivity to match your environment.</p>
+                    <h3 data-i18n="features.alerts_title">Alertas Visuais e Sonoros</h3>
+                    <p data-i18n="features.alerts_desc">Indicadores de som alto, perda de conexão e medidor de intensidade de áudio.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">🎙️</div>
-                    <h3>Push-to-Talk</h3>
-                    <p>Soothe your baby remotely with two-way audio. Audio ducking reduces background while you speak.</p>
+                    <h3 data-i18n="features.ptt_title">Segure para Falar (PTT)</h3>
+                    <p data-i18n="features.ptt_desc">Fale com o bebê diretamente do celular dos pais para acalmá-lo de qualquer cômodo.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">🎵</div>
-                    <h3>Lullaby Player</h3>
-                    <p>Play soothing music remotely with sleep timers. Self-hosters can add custom playlists.</p>
+                    <h3 data-i18n="features.lullabies_title">Músicas e Canções de Ninar</h3>
+                    <p data-i18n="features.lullabies_desc">Toque canções de ninar ou ruído branco no quarto com temporizador programável.</p>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">🔗</div>
-                    <h3>Peer-to-Peer</h3>
-                    <p>Direct WebRTC connection. Your video never touches our servers - maximum privacy.</p>
+                    <div class="feature-icon">🔒</div>
+                    <h3 data-i18n="features.privacy_title">Privacidade Absoluta</h3>
+                    <p data-i18n="features.privacy_desc">Nenhum vídeo ou áudio é gravado ou armazenado em servidores externos.</p>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Works Everywhere</h3>
-                    <p>Any modern browser on any device. No app store, no downloads, no restrictions.</p>
+                    <div class="feature-icon">👥</div>
+                    <h3 data-i18n="features.multi_title">Múltiplos Monitores</h3>
+                    <p data-i18n="features.multi_desc">Pai e mãe podem acompanhar a transmissão simultaneamente em aparelhos separados.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">📶</div>
-                    <h3>Audio-Only Mode</h3>
-                    <p>Disable video to save bandwidth. Perfect for monitoring when you don't need to see.</p>
+                    <h3 data-i18n="start.mode_audio">Somente Áudio</h3>
+                    <p data-i18n="start.mode_hint">Somente áudio economiza bateria e consome menos dados.</p>
                 </div>
 
                 <div class="feature-card">
-                    <div class="feature-icon">🔇</div>
-                    <h3>Echo Reduction</h3>
-                    <p>Spectral subtraction reduces lullaby bleedthrough while preserving baby sounds.</p>
+                    <div class="feature-icon">🌐</div>
+                    <h3 data-i18n="features.relay_title">Servidor Relay Integrado</h3>
+                    <p data-i18n="features.relay_desc">Conecte-se mesmo em redes restritivas onde conexões P2P diretas são bloqueadas.</p>
                 </div>
 
                 <div class="feature-card">
                     <div class="feature-icon">🔋</div>
-                    <h3>Battery Optimized</h3>
-                    <p>Screen auto-dims on sender. Multiple keep-awake mechanisms prevent sleep.</p>
+                    <h3 data-i18n="features.battery_title">Economia de Bateria</h3>
+                    <p data-i18n="features.battery_desc">Tela do bebê escurece automaticamente mantendo a câmera e o microfone ativos.</p>
                 </div>
             </div>
         </div>
@@ -1417,34 +1474,34 @@
     <section class="how-it-works" id="how-it-works">
         <div class="section-container">
             <div class="section-header">
-                <span class="section-label">Simple Setup</span>
-                <h2>Up and Running in 30 Seconds</h2>
-                <p>No accounts, no setup wizards, no complicated pairing.</p>
+                <span class="section-label" data-i18n="how.section_label">Passo a Passo</span>
+                <h2 data-i18n="how.section_title">Pronto para uso em 30 segundos</h2>
+                <p data-i18n="how.section_desc">Sem cadastros, sem senhas complicadas e sem burocracia.</p>
             </div>
 
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <h3>Create a Session</h3>
-                    <p>Choose any session name - it's your private room. "nursery", "baby-cam", anything works.</p>
+                    <h3 data-i18n="how.step1_title">Crie uma Sessão</h3>
+                    <p data-i18n="how.step1_desc">Escolha um nome único para o quarto do bebê (ex: bebe-quarto).</p>
                 </div>
 
                 <div class="step">
                     <div class="step-number">2</div>
-                    <h3>Set Up Sender</h3>
-                    <p>Open the sender page on the phone near your baby. Grant camera & mic access.</p>
+                    <h3 data-i18n="how.step2_title">Abra a Câmera do Bebê</h3>
+                    <p data-i18n="how.step2_desc">No celular que ficará no quarto, abra o modo Câmera e permita acesso.</p>
                 </div>
 
                 <div class="step">
                     <div class="step-number">3</div>
-                    <h3>Watch & Listen</h3>
-                    <p>Open receiver on your phone with the same session name. You're connected!</p>
+                    <h3 data-i18n="how.step3_title">Abra o Monitor dos Pais</h3>
+                    <p data-i18n="how.step3_desc">No seu celular, abra com o mesmo nome de sessão para assistir e ouvir.</p>
                 </div>
 
                 <div class="step">
                     <div class="step-number">⭐</div>
-                    <h3>Bookmark It</h3>
-                    <p>Save the URL for instant access. No need to enter the session name again.</p>
+                    <h3 data-i18n="how.step4_title">Salve nos Favoritos</h3>
+                    <p data-i18n="how.step4_desc">Adicione aos favoritos ou instale como app para abrir com 1 toque todos os dias.</p>
                 </div>
             </div>
         </div>
@@ -1455,23 +1512,22 @@
         <div class="section-container">
             <div class="open-source-grid">
                 <div class="open-source-text">
-                    <span class="section-label">Open Source</span>
-                    <h2>Free Forever. No Catch.</h2>
-                    <p>This isn't freemium. It's a genuine open source project you can run yourself, modify, and share. Your data stays between your devices.</p>
+                    <span class="section-label" data-i18n="open.label">Código Aberto</span>
+                    <h2 data-i18n="open.title">Livre, Gratuito e Transparente</h2>
+                    <p data-i18n="open.desc">Este é um projeto de código aberto sob licença MIT. Você pode rodar no seu próprio servidor com total autonomia.</p>
 
                     <ul class="feature-list">
-                        <li>Self-host on your own server</li>
-                        <li>No tracking or analytics</li>
-                        <li>No accounts required</li>
-                        <li>MIT licensed - do anything</li>
-                        <li>Contributions welcome</li>
+                        <li data-i18n="open.item1">Hospede no seu próprio servidor (Docker / Coolify)</li>
+                        <li data-i18n="open.item2">Sem rastreadores ou anúncios</li>
+                        <li data-i18n="open.item3">Sem limites de uso ou assinaturas</li>
+                        <li data-i18n="open.item4">Código auditável no GitHub</li>
                     </ul>
 
                     <a href="https://github.com/felschatz/baby-monitor" target="_blank" rel="noopener" class="btn btn-secondary">
                         <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
                         </svg>
-                        View on GitHub
+                        <span data-i18n="open.button">Ver no GitHub</span>
                     </a>
                 </div>
 
@@ -1479,32 +1535,32 @@
                     <div class="tech-card">
                         <div class="tech-card-icon">🔌</div>
                         <h4>WebRTC</h4>
-                        <p>Peer-to-peer streaming</p>
+                        <p data-i18n="features.webrtc_title">Transmissão em Tempo Real</p>
                     </div>
                     <div class="tech-card">
                         <div class="tech-card-icon">📡</div>
                         <h4>Server-Sent Events</h4>
-                        <p>Simple signaling</p>
+                        <p>Sinalização Eficiente</p>
                     </div>
                     <div class="tech-card">
                         <div class="tech-card-icon">🟢</div>
                         <h4>Node.js</h4>
-                        <p>Lightweight server</p>
+                        <p>Servidor Leve</p>
                     </div>
                     <div class="tech-card">
-                        <div class="tech-card-icon">📦</div>
-                        <h4>Zero Dependencies</h4>
-                        <p>Pure Node.js</p>
+                        <div class="tech-card-icon">📱</div>
+                        <h4>PWA</h4>
+                        <p data-i18n="features.pwa_title">Instalável como App</p>
                     </div>
                     <div class="tech-card">
                         <div class="tech-card-icon">🌐</div>
                         <h4>Vanilla JS</h4>
-                        <p>No frameworks</p>
+                        <p>Sem frameworks pesados</p>
                     </div>
                     <div class="tech-card">
                         <div class="tech-card-icon">🔒</div>
                         <h4>HTTPS Ready</h4>
-                        <p>Secure by default</p>
+                        <p data-i18n="features.privacy_title">Privacidade Absoluta</p>
                     </div>
                 </div>
             </div>
@@ -1515,10 +1571,10 @@
     <section class="cta">
         <div class="section-container">
             <div class="cta-content">
-                <h2>Ready to Get Started?</h2>
-                <p>Set up your baby monitor in under a minute. No signup, no credit card, no catch.</p>
+                <h2 data-i18n="cta.title">Pronto para começar?</h2>
+                <p data-i18n="cta.desc">Configure a babá eletrônica agora mesmo direto pelo navegador.</p>
                 <a href="/start.html" class="btn btn-primary">
-                    Launch Baby Monitor
+                    <span data-i18n="cta.button">Iniciar Babá Eletrônica</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
@@ -1530,13 +1586,13 @@
     <!-- Footer -->
     <footer>
         <div class="footer-container">
-            <a href="/" class="footer-logo">Baby Monitor</a>
+            <a href="/" class="footer-logo" data-i18n="app.title">Babá Eletrônica</a>
 
             <div class="footer-links">
-                <a href="/start.html">Get Started</a>
-                <a href="#features">Features</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="https://github.com/felschatz/baby-monitor" target="_blank" rel="noopener">GitHub</a>
+                <a href="/start.html" data-i18n="nav.get_started">Começar Agora</a>
+                <a href="#features" data-i18n="nav.features">Recursos</a>
+                <a href="#how-it-works" data-i18n="nav.how_it_works">Como Funciona</a>
+                <a href="https://github.com/felschatz/baby-monitor" target="_blank" rel="noopener" data-i18n="nav.github">GitHub</a>
             </div>
 
             <div class="footer-social">
@@ -1549,6 +1605,7 @@
         </div>
     </footer>
 
+    <script type="module" src="/js/i18n.js"></script>
     <script>
         // Navbar scroll effect
         const navbar = document.getElementById('navbar');

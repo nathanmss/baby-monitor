@@ -1,57 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Baby Monitor - Receiver</title>
+    <title data-i18n="receiver.title">Babá Eletrônica - Monitor dos Pais</title>
+    
+    <!-- PWA & Mobile Meta Tags -->
+    <meta name="theme-color" content="#0a0e1a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+    <link rel="apple-touch-icon" href="/icons/icon.svg">
+
     <link rel="stylesheet" href="/receiver.css?v=20260426d">
 </head>
 <body>
     <!-- Session prompt overlay -->
     <div class="session-overlay" id="sessionOverlay">
         <div class="session-prompt">
-            <h2>Enter Session Name</h2>
-            <p>Use the same name as the sender to connect</p>
-            <input type="text" id="sessionInput" placeholder="e.g., felix-baby" autocomplete="off" autocapitalize="none">
-            <button class="btn btn-start" id="sessionJoinBtn">Join Session</button>
-            <p class="session-hint">Bookmark the URL after joining for easy daily access</p>
+            <h2 data-i18n="receiver.prompt_title">Digite o Nome da Sessão</h2>
+            <p data-i18n="receiver.prompt_desc">Use o mesmo nome configurado na câmera do bebê</p>
+            <input type="text" id="sessionInput" data-i18n-placeholder="start.session_placeholder" placeholder="ex: quarto-bebe, felix-baby" autocomplete="off" autocapitalize="none">
+            <button class="btn btn-start" id="sessionJoinBtn" data-i18n="sender.join_btn">Entrar na Sessão</button>
+            <p class="session-hint" data-i18n="sender.prompt_hint">Salve o link nos favoritos após entrar para acesso direto diário</p>
         </div>
     </div>
 
     <!-- Disconnect alert overlay -->
-    <div class="alert-overlay disconnect-alert" id="disconnectAlert">
-        CONNECTION LOST
+    <div class="alert-overlay disconnect-alert" id="disconnectAlert" data-i18n="receiver.connection_lost">
+        CONEXÃO PERDIDA
     </div>
 
     <div class="debug-banner" id="debugBanner" style="display: none;">
         <div class="debug-header">
-            <div class="debug-title">Debug</div>
-            <button type="button" class="debug-toggle-btn" id="debugToggleBtn" aria-controls="debugText" aria-expanded="true">Minimize</button>
+            <div class="debug-title" data-i18n="receiver.debug">Depuração</div>
+            <button type="button" class="debug-toggle-btn" id="debugToggleBtn" aria-controls="debugText" aria-expanded="true" data-i18n="receiver.minimize">Minimizar</button>
         </div>
         <div class="debug-text" id="debugText"></div>
     </div>
 
     <div class="header">
-        <a href="/" class="back-link">←</a>
-        <h2>Parent's Phone</h2>
+        <a href="/" class="back-link" title="Voltar">←</a>
+        <h2 data-i18n="receiver.header_title">Monitor dos Pais</h2>
         <div class="status-indicator">
             <div class="status-dot" id="statusDot"></div>
-            <span id="statusText">Connecting...</span>
+            <span id="statusText" data-i18n="receiver.connecting">Conectando...</span>
         </div>
-        <button class="reload-btn" id="reloadBtn" title="Reload page">Reload</button>
+        <button class="reload-btn" id="reloadBtn" title="Recarregar" data-i18n="receiver.reload">Recarregar</button>
     </div>
 
     <div class="video-container" id="videoContainer">
         <video id="remoteVideo" autoplay playsinline muted></video>
         <div class="overlay" id="overlay">
             <div class="overlay-content">
-                <p id="overlayText">Waiting for sender to start streaming...</p>
+                <p id="overlayText" data-i18n="receiver.waiting_sender">Aguardando a câmera do bebê iniciar transmissão...</p>
             </div>
         </div>
         <div class="audio-only-indicator" id="audioOnlyIndicator">
             <div class="audio-only-icon">🎤</div>
-            <div class="audio-only-text">Audio Only</div>
-            <div class="audio-only-subtext">Video disabled on sender</div>
+            <div class="audio-only-text" data-i18n="receiver.audio_only">Somente Áudio</div>
+            <div class="audio-only-subtext" data-i18n="receiver.audio_only_subtext">Vídeo desativado na câmera do bebê</div>
         </div>
     </div>
 
@@ -63,7 +73,7 @@
             <div class="audio-meter-threshold" id="thresholdMarkerInline"></div>
             <div class="audio-meter-noise-gate" id="noiseGateMarkerInline" style="display: none;"></div>
         </div>
-        <span class="audio-meter-label">Baby</span>
+        <span class="audio-meter-label" data-i18n="receiver.baby">Bebê</span>
     </div>
 
     <!-- Always-visible bottom bar with PTT and drawer toggle -->
@@ -72,14 +82,14 @@
             <button class="ptt-btn" id="pttBtn" disabled>🎤</button>
         </div>
 
-        <button class="lock-toggle" id="lockBtn" type="button" aria-pressed="false" aria-label="Lock controls" title="Lock controls">
+        <button class="lock-toggle" id="lockBtn" type="button" aria-pressed="false" aria-label="Bloquear controles" title="Bloquear controles">
             <span class="lock-toggle-icon"></span>
-            <span class="lock-toggle-text" id="lockBtnText">Lock</span>
+            <span class="lock-toggle-text" id="lockBtnText" data-i18n="receiver.lock">Bloquear</span>
         </button>
 
         <button class="drawer-toggle" id="drawerToggle">
             <span class="drawer-toggle-icon">⚙</span>
-            <span class="drawer-toggle-text">Controls</span>
+            <span class="drawer-toggle-text" data-i18n="receiver.controls">Controles</span>
         </button>
     </div>
 
@@ -109,7 +119,7 @@
             <span class="info-icon">Tone</span>
             <span id="monitorNoiseStatusDisplay">On</span>
         </div>
-        <span class="info-status" id="info">Waiting...</span>
+        <span class="info-status" id="info" data-i18n="receiver.waiting">Aguardando...</span>
     </div>
 
     <!-- Collapsible controls drawer -->
@@ -122,7 +132,7 @@
             </div>
 
             <div class="control-section">
-                <label class="control-label">Volume</label>
+                <label class="control-label" data-i18n="receiver.volume">Volume</label>
                 <div class="control-row">
                     <input type="range" id="volume" min="0" max="100" value="100" class="slider-input">
                     <span id="volumeValue" class="slider-value">100%</span>
@@ -130,7 +140,7 @@
             </div>
 
             <div class="control-section">
-                <label class="control-label">Alert Sensitivity</label>
+                <label class="control-label" data-i18n="receiver.alert_sensitivity">Sensibilidade do Alerta</label>
                 <div class="control-row">
                     <input type="range" id="sensitivity" min="10" max="100" value="50" class="slider-input">
                     <span id="sensitivityValue" class="slider-value">50</span>
@@ -138,26 +148,26 @@
             </div>
 
             <div class="control-section">
-                <label class="control-label">Noise Gate</label>
+                <label class="control-label" data-i18n="receiver.noise_gate">Filtro de Ruído (Noise Gate)</label>
                 <div class="control-row">
                     <input type="range" id="noiseGate" min="0" max="90" value="0" class="slider-input">
                     <span id="noiseGateValue" class="slider-value">Off</span>
                 </div>
-                <div class="control-hint" id="noiseGateHint">Mutes audio below threshold level</div>
+                <div class="control-hint" id="noiseGateHint" data-i18n="receiver.noise_gate_hint_off">Silencia sons abaixo do nível limite</div>
             </div>
 
             <div class="control-section music-section" id="musicContainer" style="display: none;">
-                <label class="control-label">Music</label>
+                <label class="control-label" data-i18n="receiver.music">Músicas</label>
                 <div class="music-controls">
                     <button class="music-btn" id="musicBtn">🎵</button>
                     <select class="music-playlist-select" id="musicPlaylistSelect" title="Select playlist"></select>
                     <select class="music-timer-select" id="musicTimerSelect">
                         <option value="45">45 min</option>
-                        <option value="60">1 hour</option>
-                        <option value="105" selected>1:45</option>
-                        <option value="120">2 hours</option>
+                        <option value="60">1 hora</option>
+                        <option value="105" selected>1h 45m</option>
+                        <option value="120">2 horas</option>
                     </select>
-                    <button class="music-reset-btn" id="musicResetBtn" style="display: none;">Reset</button>
+                    <button class="music-reset-btn" id="musicResetBtn" style="display: none;" data-i18n="sender.reset">Reiniciar</button>
                 </div>
                 <div class="music-status" id="musicStatus"></div>
             </div>
@@ -165,58 +175,55 @@
             <div class="control-section toggles-section">
                 <label class="toggle-option">
                     <input type="checkbox" id="audioOnlyToggle">
-                    <span>Audio only mode</span>
+                    <span data-i18n="receiver.audio_only_mode">Modo somente áudio</span>
                 </label>
                 <label class="toggle-option" id="echoCancelToggleLabel">
                     <input type="checkbox" id="echoCancelToggle">
-                    <span>Reduce music echo</span>
+                    <span data-i18n="receiver.reduce_music_echo">Reduzir eco de música</span>
                     <span class="experimental-badge">Beta</span>
                 </label>
                 <label class="toggle-option">
                     <input type="checkbox" id="sensitivityAlertToggle" checked>
-                    <span>Play sensitivity alert sound</span>
+                    <span data-i18n="receiver.play_sensitivity_alert">Tocar alerta sonoro quando detectar som alto</span>
                 </label>
                 <label class="toggle-option">
                     <input type="checkbox" id="monitorNoiseToggle">
-                    <span>Loop monitor tone while connected</span>
+                    <span data-i18n="receiver.loop_monitor_tone">Tocar tom suave de monitoramento contínuo</span>
                 </label>
             </div>
 
             <div class="control-section" id="monitorNoiseVolumeContainer" style="display: none;">
-                <label class="control-label">Monitor Tone Volume</label>
+                <label class="control-label" data-i18n="receiver.monitor_tone_volume">Volume do tom de monitoramento</label>
                 <div class="control-row">
                     <input type="range" id="monitorNoiseVolume" min="0" max="100" value="35" class="slider-input">
                     <span id="monitorNoiseVolumeValue" class="slider-value">35%</span>
                 </div>
-                <div class="control-hint">Only used when Loop monitor tone while connected is enabled</div>
+                <div class="control-hint" data-i18n="receiver.loop_monitor_tone">Usado apenas com o tom contínuo ativo</div>
             </div>
 
             <div class="control-section shutdown-section" id="shutdownContainer">
-                <label class="control-label">Auto-shutdown</label>
+                <label class="control-label" data-i18n="receiver.auto_shutdown">Desligamento automático da câmera</label>
                 <div class="shutdown-controls">
-                    <button class="shutdown-btn" id="shutdownBtn" title="Set auto-shutdown">Set</button>
+                    <button class="shutdown-btn" id="shutdownBtn" title="Definir desligamento automático" data-i18n="receiver.set">Definir</button>
                     <select class="timer-select" id="shutdownTimerSelect">
-                        <option value="off">Disabled</option>
+                        <option value="off" data-i18n="receiver.disabled">Desativado</option>
                         <option value="20m">20 min</option>
-                        <option value="4h">4 hours</option>
-                        <option value="6h" selected>6 hours</option>
-                        <option value="8h">8 hours</option>
-                        <option value="10h">10 hours</option>
-                        <option value="now">Shutdown now</option>
+                        <option value="4h">4 horas</option>
+                        <option value="6h" selected>6 horas</option>
+                        <option value="8h">8 horas</option>
+                        <option value="10h">10 horas</option>
+                        <option value="now" data-i18n="receiver.shutdown_now">Desligar agora</option>
                     </select>
                 </div>
                 <div class="shutdown-status" id="shutdownStatus"></div>
-                <div class="control-hint">Choose a time, then tap Set or Reset</div>
+                <div class="control-hint" data-i18n="receiver.auto_shutdown_hint">Escolha o tempo e clique em Definir</div>
             </div>
-
 
             <div class="control-section test-sound-section">
-                <label class="control-label">Test Sound</label>
-                <button class="test-sound-btn" id="testSoundBtn" disabled>Send test ping</button>
-                <div class="control-hint">Injects a short ping into the baby audio stream</div>
+                <label class="control-label" data-i18n="receiver.test_sound">Som de Teste</label>
+                <button class="test-sound-btn" id="testSoundBtn" disabled data-i18n="receiver.send_test_ping">Enviar bipe de teste</button>
+                <div class="control-hint" data-i18n="receiver.test_sound_hint">Injeta um bipe curto no áudio para verificar o volume</div>
             </div>
-            <div class="wisdom-text" id="receiverWisdom">Wisdom - Apr 29, 2026: The best fallback is the one you prepare before you need it.</div>
-            <div class="wisdom-text" id="receiverWisdom">Wisdom - Apr 29, 2026: Good preparation works quietly in the background.</div>
         </div>
     </div>
 

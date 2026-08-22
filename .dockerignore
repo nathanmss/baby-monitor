@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.env.local
+tests
+tests-results
+playwright-report
+playwright.config.js
+.system_generated
+specs.md
+README.md
+DEVELOPMENT.md
+DEPLOYMENT.md
+Dockerfile*
+docker-compose*.yml
