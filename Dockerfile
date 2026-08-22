@@ -21,11 +21,11 @@ RUN npm ci --omit=dev --ignore-scripts || npm install --omit=dev
 # Copy application files
 COPY server/ ./server/
 COPY public/ ./public/
-COPY mp3/ ./mp3/
+COPY *.mp3 ./
 COPY server.js ./
 
-# Set permissions for node user
-RUN chown -R node:node /app
+# Create mp3 directory if referenced
+RUN mkdir -p mp3 && chown -R node:node /app
 
 # Switch to non-root user
 USER node
