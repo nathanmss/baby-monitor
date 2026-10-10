@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title data-i18n="receiver.title">Babá Eletrônica - Monitor dos Pais</title>
+    <title data-i18n="receiver.title">Olho de Sauron Baby - Monitor dos Pais</title>
     
     <!-- PWA & Mobile Meta Tags -->
-    <meta name="theme-color" content="#0a0e1a">
+    <meta name="theme-color" content="#09090b">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,7 +14,7 @@
     <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
     <link rel="apple-touch-icon" href="/icons/icon.svg">
 
-    <link rel="stylesheet" href="/receiver.css?v=20260426d">
+    <link rel="stylesheet" href="/receiver.css?v=sauron1">
 </head>
 <body>
     <!-- Session prompt overlay -->
@@ -76,11 +76,18 @@
         <span class="audio-meter-label" data-i18n="receiver.baby">Bebê</span>
     </div>
 
-    <!-- Always-visible bottom bar with PTT and drawer toggle -->
+    <!-- Always-visible bottom bar with PTT, rotation, lock and drawer toggle -->
     <div class="bottom-bar">
         <div class="ptt-container">
-            <button class="ptt-btn" id="pttBtn" disabled>🎤</button>
+            <button class="ptt-btn" id="pttBtn" disabled title="Segure para falar">🎤</button>
         </div>
+
+        <button class="rotate-btn" id="rotateBtn" type="button" aria-label="Rotacionar vídeo" title="Rotacionar vídeo" data-i18n-title="receiver.rotate">
+            <svg class="rotate-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-1.19"/>
+            </svg>
+            <span class="rotate-angle-badge" id="rotateAngleBadge">0°</span>
+        </button>
 
         <button class="lock-toggle" id="lockBtn" type="button" aria-pressed="false" aria-label="Bloquear controles" title="Bloquear controles">
             <span class="lock-toggle-icon"></span>
@@ -227,6 +234,6 @@
         </div>
     </div>
 
-    <script type="module" src="/js/receiver-app.js?v=20260426d"></script>
+    <script type="module" src="/js/receiver-app.js?v=sauron1"></script>
 </body>
 </html>

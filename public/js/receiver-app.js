@@ -86,6 +86,8 @@ const noiseGateDisplay = document.getElementById('noiseGateDisplay');
 const noiseGateMarker = document.getElementById('noiseGateMarker');
 const lockBtn = document.getElementById('lockBtn');
 const lockBtnText = document.getElementById('lockBtnText');
+const rotateBtn = document.getElementById('rotateBtn');
+const rotateAngleBadge = document.getElementById('rotateAngleBadge');
 const reloadBtn = document.getElementById('reloadBtn');
 const info = document.getElementById('info');
 const thresholdMarker = document.getElementById('thresholdMarker');
@@ -1381,6 +1383,98 @@ if (reloadBtn) {
         window.location.reload();
     });
 }
+
+// Video Rotation Management (Client-Side, zero-reencoding)
+const ROTATION_STORAGE_KEY = 'sauron-video-rotation';
+const VALID_ROTATIONS = [0, 90, 180, 270];
+
+let currentRotation = 0;
+try {
+    const savedRotation = parseInt(localStorage.getItem(ROTATION_STORAGE_KEY) || '0', 10);
+    if (VALID_ROTATIONS.includes(savedRotation)) {
+        currentRotation = savedRotation;
+    }
+} catch (e) {
+    console.warn('Unable to read rotation from localStorage:', e);
+}
+
+function applyVideoRotation(angle) {
+    if (!remoteVideo || !videoContainer) return;
+
+    currentRotation = VALID_ROTATIONS.includes(angle) ? angle : 0;
+
+    if (rotateAngleBadge) {
+        rotateAngleBadge.textContent = `${currentRotation}°`;
+    }
+
+    if (rotateBtn) {
+        rotateBtn.setAttribute('data-angle', String(currentRotation));
+        rotateBtn.title = `Rotacionar vídeo (${currentRotation}°)`;
+    }
+
+    // Keep layout flow bounds at 100% so scrollHeight / scrollWidth never exceed client bounds
+    remoteVideo.style.width = '100%';
+    remoteVideo.style.height = '100%';
+    remoteVideo.style.maxWidth = '100%';
+    remoteVideo.style.maxHeight = '100%';
+
+    if (currentRotation === 90 || currentRotation === 270) {
+        const containerRect = videoContainer.getBoundingClientRect();
+        const cWidth = containerRect.width;
+        const cHeight = containerRect.height;
+
+        let scale = 1;
+        if (cWidth > 0 && cHeight > 0) {
+            scale = Math.min(cWidth / cHeight, cHeight / cWidth);
+        }
+
+        remoteVideo.style.transform = `rotate(${currentRotation}deg) scale(${scale})`;
+    } else {
+        remoteVideo.style.transform = `rotate(${currentRotation}deg)`;
+    }
+
+    remoteVideo.setAttribute('data-rotation', String(currentRotation));
+    videoContainer.setAttribute('data-rotation', String(currentRotation));
+}
+
+function cycleVideoRotation() {
+    if (uiLocked) return;
+    const nextAngle = (currentRotation + 90) % 360;
+    applyVideoRotation(nextAngle);
+    try {
+        localStorage.setItem(ROTATION_STORAGE_KEY, String(currentRotation));
+    } catch (e) {
+        console.warn('Unable to persist rotation to localStorage:', e);
+    }
+}
+
+if (rotateBtn) {
+    rotateBtn.addEventListener('click', cycleVideoRotation);
+}
+
+if (remoteVideo) {
+    remoteVideo.addEventListener('loadedmetadata', () => {
+        applyVideoRotation(currentRotation);
+    });
+}
+
+if (typeof ResizeObserver !== 'undefined' && videoContainer) {
+    const rotationResizeObserver = new ResizeObserver(() => {
+        if (currentRotation === 90 || currentRotation === 270) {
+            applyVideoRotation(currentRotation);
+        }
+    });
+    rotationResizeObserver.observe(videoContainer);
+}
+
+window.addEventListener('resize', () => {
+    if (currentRotation === 90 || currentRotation === 270) {
+        applyVideoRotation(currentRotation);
+    }
+});
+
+// Apply initial rotation immediately
+applyVideoRotation(currentRotation);
 
 lockBtn.addEventListener('click', () => {
     if (uiLocked) return;
