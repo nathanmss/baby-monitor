@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title data-i18n="receiver.title">Olho de Sauron Baby - Monitor dos Pais</title>
     
     <!-- PWA & Mobile Meta Tags -->
@@ -14,9 +14,9 @@
     <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
     <link rel="apple-touch-icon" href="/icons/icon.svg">
 
-    <link rel="stylesheet" href="/receiver.css?v=sauron1">
+    <link rel="stylesheet" href="/receiver.css?v=sauron2">
 </head>
-<body>
+<body class="immersive-monitor">
     <!-- Session prompt overlay -->
     <div class="session-overlay" id="sessionOverlay">
         <div class="session-prompt">
@@ -33,6 +33,7 @@
         CONEXÃO PERDIDA
     </div>
 
+    <!-- Debug banner -->
     <div class="debug-banner" id="debugBanner" style="display: none;">
         <div class="debug-header">
             <div class="debug-title" data-i18n="receiver.debug">Depuração</div>
@@ -41,16 +42,7 @@
         <div class="debug-text" id="debugText"></div>
     </div>
 
-    <div class="header">
-        <a href="/" class="back-link" title="Voltar">←</a>
-        <h2 data-i18n="receiver.header_title">Monitor dos Pais</h2>
-        <div class="status-indicator">
-            <div class="status-dot" id="statusDot"></div>
-            <span id="statusText" data-i18n="receiver.connecting">Conectando...</span>
-        </div>
-        <button class="reload-btn" id="reloadBtn" title="Recarregar" data-i18n="receiver.reload">Recarregar</button>
-    </div>
-
+    <!-- Edge-to-Edge 100% Fullscreen Video Viewport -->
     <div class="video-container" id="videoContainer">
         <video id="remoteVideo" autoplay playsinline muted></video>
         <div class="overlay" id="overlay">
@@ -59,29 +51,49 @@
             </div>
         </div>
         <div class="audio-only-indicator" id="audioOnlyIndicator">
-            <div class="audio-only-icon">🎤</div>
+            <div class="audio-only-pulse-orb">
+                <div class="audio-only-icon">🎤</div>
+            </div>
             <div class="audio-only-text" data-i18n="receiver.audio_only">Somente Áudio</div>
             <div class="audio-only-subtext" data-i18n="receiver.audio_only_subtext">Vídeo desativado na câmera do bebê</div>
         </div>
     </div>
 
-    <!-- Baby audio level meter - prominent full-width row -->
-    <div class="audio-meter-row">
-        <span class="audio-meter-icon">👶</span>
-        <div class="audio-meter-bar">
-            <div class="audio-meter-level" id="audioLevelInline"></div>
-            <div class="audio-meter-threshold" id="thresholdMarkerInline"></div>
-            <div class="audio-meter-noise-gate" id="noiseGateMarkerInline" style="display: none;"></div>
+    <!-- Floating Top Bar (Minimalist Island) -->
+    <header class="floating-header" id="floatingHeader">
+        <div class="header-pill left-pill">
+            <a href="/" class="back-link" title="Voltar para Início">←</a>
+            <span class="header-brand-title" data-i18n="receiver.header_title">Monitor dos Pais</span>
         </div>
-        <span class="audio-meter-label" data-i18n="receiver.baby">Bebê</span>
-    </div>
 
-    <!-- Always-visible bottom bar with PTT, rotation, lock and drawer toggle -->
-    <div class="bottom-bar">
+        <div class="header-pill right-pill">
+            <div class="status-indicator">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText" data-i18n="receiver.connecting">Conectando...</span>
+            </div>
+            <button class="reload-btn" id="reloadBtn" title="Recarregar transmissão" data-i18n="receiver.reload">↻</button>
+        </div>
+    </header>
+
+    <!-- Floating HUD Dock (Centered at Bottom over Video) -->
+    <nav class="floating-hud-dock bottom-bar" id="floatingHud" aria-label="Controles do Monitor">
+        <!-- PTT Button -->
         <div class="ptt-container">
-            <button class="ptt-btn" id="pttBtn" disabled title="Segure para falar">🎤</button>
+            <button class="ptt-btn" id="pttBtn" disabled title="Segure para falar com o bebê">🎤</button>
         </div>
 
+        <!-- Compact Noise VU Meter Pill -->
+        <div class="audio-meter-row hud-vu-meter" title="Medidor de áudio do bebê">
+            <span class="audio-meter-icon">👶</span>
+            <div class="audio-meter-bar">
+                <div class="audio-meter-level" id="audioLevelInline"></div>
+                <div class="audio-meter-threshold" id="thresholdMarkerInline"></div>
+                <div class="audio-meter-noise-gate" id="noiseGateMarkerInline" style="display: none;"></div>
+            </div>
+            <span class="audio-meter-label" data-i18n="receiver.baby">Bebê</span>
+        </div>
+
+        <!-- Video Rotation Button -->
         <button class="rotate-btn" id="rotateBtn" type="button" aria-label="Rotacionar vídeo" title="Rotacionar vídeo" data-i18n-title="receiver.rotate">
             <svg class="rotate-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-1.19"/>
@@ -89,19 +101,21 @@
             <span class="rotate-angle-badge" id="rotateAngleBadge">0°</span>
         </button>
 
+        <!-- Lock Button -->
         <button class="lock-toggle" id="lockBtn" type="button" aria-pressed="false" aria-label="Bloquear controles" title="Bloquear controles">
             <span class="lock-toggle-icon"></span>
             <span class="lock-toggle-text" id="lockBtnText" data-i18n="receiver.lock">Bloquear</span>
         </button>
 
-        <button class="drawer-toggle" id="drawerToggle">
+        <!-- Settings Drawer Toggle -->
+        <button class="drawer-toggle" id="drawerToggle" aria-label="Configurações e Controles">
             <span class="drawer-toggle-icon">⚙</span>
             <span class="drawer-toggle-text" data-i18n="receiver.controls">Controles</span>
         </button>
-    </div>
+    </nav>
 
-    <!-- Info strip - always visible, shows current status -->
-    <div class="info-strip">
+    <!-- Floating Info Badges (Discreet Status Pills) -->
+    <div class="info-strip floating-info-strip" id="infoStrip">
         <div class="info-item">
             <span class="info-icon">🔊</span>
             <span id="volumeDisplay">100%</span>
@@ -129,9 +143,14 @@
         <span class="info-status" id="info" data-i18n="receiver.waiting">Aguardando...</span>
     </div>
 
-    <!-- Collapsible controls drawer -->
-    <div class="controls-drawer" id="controlsDrawer">
+    <!-- Floating Settings Popover Modal -->
+    <div class="controls-drawer floating-settings-panel" id="controlsDrawer">
         <div class="drawer-content">
+            <div class="settings-modal-header">
+                <h3>Ajustes do Monitor</h3>
+                <button type="button" class="close-drawer-btn" id="closeDrawerBtn" aria-label="Fechar">✕</button>
+            </div>
+
             <div class="audio-meter">
                 <div class="audio-level" id="audioLevel"></div>
                 <div class="threshold-marker" id="thresholdMarker"></div>
@@ -234,6 +253,6 @@
         </div>
     </div>
 
-    <script type="module" src="/js/receiver-app.js?v=sauron1"></script>
+    <script type="module" src="/js/receiver-app.js?v=sauron2"></script>
 </body>
 </html>

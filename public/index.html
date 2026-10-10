@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title data-i18n="start.title">Olho de Sauron Baby</title>
     <meta name="description" content="Monitor de bebê em tempo real - Olho de Sauron Baby">
     
@@ -16,112 +16,121 @@
     <link rel="apple-touch-icon" href="/icons/icon.svg">
 
     <style>
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         :root {
-            --bg-oled: #09090b;
-            --bg-surface: #121214;
-            --bg-card: #18181b;
-            --bg-subtle: #27272a;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --border-hover: rgba(217, 119, 6, 0.35);
+            --bg-canvas: #09090b;
+            --bg-surface: rgba(18, 18, 20, 0.85);
+            --bg-surface-elevated: rgba(28, 28, 32, 0.95);
+            --bg-card: #121214;
+            --bg-card-hover: #18181c;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-focus: rgba(217, 119, 6, 0.45);
             --accent-amber: #d97706;
-            --accent-amber-dark: #b45309;
+            --accent-amber-glow: rgba(217, 119, 6, 0.25);
             --accent-amber-subtle: rgba(217, 119, 6, 0.12);
             --status-green: #16a34a;
             --status-red: #dc2626;
             --text-primary: #f4f4f5;
             --text-secondary: #a1a1aa;
             --text-muted: #71717a;
-            --radius-lg: 16px;
-            --radius-md: 10px;
         }
 
         html, body {
-            min-height: 100%;
-            background-color: var(--bg-oled);
+            height: 100%;
+            background-color: var(--bg-canvas);
             color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Geist", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         body {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 24px 16px;
             min-height: 100vh;
+            padding: 24px 20px;
+            background-image: radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.06) 0%, transparent 60%);
         }
 
-        .app-container {
+        .hub-container {
             width: 100%;
-            max-width: 440px;
+            max-width: 820px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 28px;
         }
 
-        /* Top header bar */
-        .top-bar {
+        /* Top Brand Navigation */
+        .hub-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
         }
 
-        .brand-badge {
-            display: inline-flex;
+        .brand-group {
+            display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             text-decoration: none;
             color: inherit;
         }
 
-        .sauron-eye {
-            width: 28px;
-            height: 28px;
+        .sauron-eye-icon {
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: radial-gradient(circle at 40% 40%, #fbbf24 0%, #d97706 50%, #78350f 100%);
             position: relative;
-            box-shadow: 0 0 16px rgba(217, 119, 6, 0.35);
+            box-shadow: 0 0 20px var(--accent-amber-glow);
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .sauron-pupil {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .sauron-eye-pupil {
             width: 5px;
-            height: 18px;
+            height: 24px;
             background: #09090b;
             border-radius: 4px;
+        }
+
+        .brand-titles h1 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .brand-titles p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
 
         /* Language Switcher */
         .lang-switcher {
             display: inline-flex;
-            align-items: center;
             background: var(--bg-surface);
-            border: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
             border-radius: 20px;
             padding: 2px;
             gap: 2px;
         }
 
         .lang-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
             background: transparent;
             border: none;
             border-radius: 16px;
-            padding: 6px 10px;
+            padding: 6px 12px;
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-muted);
@@ -139,58 +148,173 @@
             color: var(--text-primary);
         }
 
-        /* Main header */
-        .header-content {
-            text-align: center;
-            padding: 8px 0 12px;
+        /* Main Mode Selection Cards */
+        .modes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
         }
 
-        h1 {
-            font-size: 1.65rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.02em;
-            margin-bottom: 4px;
+        @media (max-width: 640px) {
+            .modes-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .subtitle {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        /* Card styles */
-        .card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
-            padding: 20px;
-        }
-
-        .input-group {
+        .mode-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 28px 24px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            justify-content: space-between;
+            gap: 20px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
         }
 
-        .input-label {
-            font-size: 0.75rem;
+        .mode-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-focus);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .mode-card:active {
+            transform: translateY(0);
+        }
+
+        .mode-card-sender {
+            border-color: rgba(217, 119, 6, 0.2);
+        }
+
+        .mode-card-sender:hover {
+            border-color: var(--accent-amber);
+        }
+
+        .mode-card-receiver {
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .mode-card-receiver:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .mode-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mode-badge-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .mode-card-sender .mode-badge-icon {
+            background: var(--accent-amber-subtle);
+            border-color: rgba(217, 119, 6, 0.3);
+        }
+
+        .mode-arrow-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+
+        .mode-card:hover .mode-arrow-btn {
+            background: var(--accent-amber);
+            color: #09090b;
+            transform: translateX(3px);
+        }
+
+        .mode-card-body h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+        }
+
+        .mode-card-body p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        /* Session Setup Panel */
+        .session-panel {
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .session-field-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        @media (max-width: 520px) {
+            .session-field-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        .session-input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .session-input-wrapper label {
+            display: block;
+            font-size: 0.7rem;
             font-weight: 600;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
         }
 
         .session-input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 16px;
             font-size: 1rem;
             font-family: inherit;
-            background: var(--bg-oled);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
             color: var(--text-primary);
-            transition: border-color 0.15s, box-shadow 0.15s;
             min-height: 48px;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
 
         .session-input:focus {
@@ -203,153 +327,79 @@
             color: var(--text-muted);
         }
 
-        .session-hint {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-            margin-top: 4px;
-        }
-
-        /* Configuration settings inside card */
-        .setting-divider {
-            height: 1px;
-            background: var(--border-color);
-            margin: 16px 0;
-        }
-
-        .setting-row {
+        /* Discrete Quick Settings Row */
+        .quick-settings-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .setting-row:last-child {
-            margin-bottom: 0;
+        .settings-pills-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
-        .segmented-control {
+        .setting-label-mini {
+            font-size: 0.725rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-right: 4px;
+        }
+
+        .segmented-pill {
             display: inline-flex;
-            background: var(--bg-oled);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            padding: 3px;
+            background: var(--bg-canvas);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 2px;
             gap: 2px;
         }
 
-        .segmented-btn {
-            border: none;
+        .segmented-pill button {
             background: transparent;
+            border: none;
             color: var(--text-muted);
-            padding: 6px 12px;
-            font-size: 0.75rem;
+            padding: 5px 10px;
+            font-size: 0.725rem;
             font-weight: 600;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.15s ease;
-            min-height: 32px;
+            transition: all 0.15s;
+            min-height: 28px;
         }
 
-        .segmented-btn.active {
+        .segmented-pill button.active {
             background: var(--accent-amber);
             color: #09090b;
         }
 
-        .segmented-btn:not(.active):hover {
+        .segmented-pill button:not(.active):hover {
             color: var(--text-primary);
         }
 
-        /* Role action buttons */
-        .actions-grid {
-            display: grid;
-            gap: 12px;
-        }
-
-        .btn-role {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            width: 100%;
-            padding: 16px 18px;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-color);
-            background: var(--bg-surface);
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: left;
-            min-height: 64px;
-            text-decoration: none;
-        }
-
-        .btn-role:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-role:active {
-            transform: translateY(0);
-        }
-
-        .role-sender {
-            border-color: rgba(217, 119, 6, 0.25);
-            background: linear-gradient(180deg, #18181b 0%, #121214 100%);
-        }
-
-        .role-receiver {
-            border-color: rgba(217, 119, 6, 0.4);
-            background: linear-gradient(180deg, #201a14 0%, #141210 100%);
-        }
-
-        .role-icon {
-            font-size: 1.5rem;
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.04);
+        /* Footer Status Pill */
+        .hub-footer {
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
-            border: 1px solid var(--border-color);
         }
 
-        .role-texts {
-            flex: 1;
-        }
-
-        .role-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 2px;
-        }
-
-        .role-sub {
-            font-size: 0.775rem;
-            color: var(--text-secondary);
-        }
-
-        .role-arrow {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            transition: transform 0.15s, color 0.15s;
-        }
-
-        .btn-role:hover .role-arrow {
-            color: var(--accent-amber);
-            transform: translateX(3px);
-        }
-
-        /* Status card */
-        .status-strip {
-            display: flex;
+        .status-pill {
+            display: inline-flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
+            gap: 8px;
+            padding: 8px 16px;
             background: var(--bg-surface);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
         }
 
         .status-dot {
@@ -362,173 +412,110 @@
 
         .status-dot.active {
             background: var(--status-green);
-            box-shadow: 0 0 8px rgba(22, 163, 74, 0.5);
-        }
-
-        .status-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            flex: 1;
-        }
-
-        .status-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .status-detail {
-            font-size: 0.725rem;
-            color: var(--text-muted);
-        }
-
-        /* Quick hints */
-        .quick-instructions {
-            padding: 14px 16px;
-            border-radius: var(--radius-md);
-            background: rgba(24, 24, 27, 0.5);
-            border: 1px solid var(--border-color);
-        }
-
-        .instructions-header {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 8px;
-        }
-
-        .instructions-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .instructions-list li {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-        }
-
-        .instructions-list li::before {
-            content: "•";
-            color: var(--accent-amber);
-            font-weight: bold;
+            box-shadow: 0 0 8px rgba(22, 163, 74, 0.6);
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Top Navigation -->
-        <div class="top-bar">
-            <div class="brand-badge">
-                <div class="sauron-eye">
-                    <div class="sauron-pupil"></div>
+    <div class="hub-container">
+        <!-- Brand & Language Header -->
+        <header class="hub-header">
+            <div class="brand-group">
+                <div class="sauron-eye-icon">
+                    <div class="sauron-eye-pupil"></div>
+                </div>
+                <div class="brand-titles">
+                    <h1 data-i18n="app.title">Olho de Sauron Baby</h1>
+                    <p data-i18n="app.subtitle">Monitoramento de áudio e vídeo em tempo real</p>
                 </div>
             </div>
+
             <div id="langSwitcher" class="lang-switcher">
-                <button type="button" class="lang-btn active" data-lang="pt-BR">
-                    <span>BR</span>
-                </button>
-                <button type="button" class="lang-btn" data-lang="en-US">
-                    <span>EN</span>
-                </button>
+                <button type="button" class="lang-btn active" data-lang="pt-BR">BR</button>
+                <button type="button" class="lang-btn" data-lang="en-US">EN</button>
             </div>
-        </div>
+        </header>
 
-        <!-- Header -->
-        <div class="header-content">
-            <h1 data-i18n="app.title">Olho de Sauron Baby</h1>
-            <p class="subtitle" data-i18n="app.subtitle">Monitoramento de áudio e vídeo em tempo real</p>
-        </div>
-
-        <!-- Session & Config Card -->
-        <div class="card">
-            <div class="input-group">
-                <label class="input-label" for="sessionInput" data-i18n="start.session_label">Nome da Sessão</label>
-                <input
-                    type="text"
-                    id="sessionInput"
-                    class="session-input"
-                    data-i18n-placeholder="start.session_placeholder"
-                    placeholder="ex: quarto-bebe, felix-baby"
-                    autocomplete="off"
-                    autocapitalize="none"
-                >
-                <p class="session-hint" data-i18n="start.session_hint">Escolha um nome único e difícil de adivinhar. Qualquer pessoa com esse nome pode assistir.</p>
-            </div>
-
-            <div class="setting-divider"></div>
-
-            <div class="setting-row">
-                <span class="input-label" data-i18n="start.quality_label">Qualidade</span>
-                <div class="segmented-control">
-                    <button type="button" class="segmented-btn quality-option" data-quality="sd" data-i18n="start.quality_sd">SD</button>
-                    <button type="button" class="segmented-btn quality-option active" data-quality="hd" data-i18n="start.quality_hd">HD</button>
+        <!-- Mode Selection Action Cards -->
+        <main class="modes-grid">
+            <!-- Mode 1: Câmera do Bebê (Sender) -->
+            <button class="mode-card mode-card-sender" id="senderBtn" type="button" aria-label="Transmitir Câmera do Bebê">
+                <div class="mode-card-header">
+                    <div class="mode-badge-icon">📹</div>
+                    <div class="mode-arrow-btn">→</div>
                 </div>
-            </div>
-
-            <div class="setting-row">
-                <span class="input-label" data-i18n="start.mode_label">Modo</span>
-                <div class="segmented-control">
-                    <button type="button" class="segmented-btn stream-option active" data-mode="av" data-i18n="start.mode_av">Vídeo + Áudio</button>
-                    <button type="button" class="segmented-btn stream-option" data-mode="audio" data-i18n="start.mode_audio">Somente Áudio</button>
+                <div class="mode-card-body">
+                    <h2 class="role-title" data-i18n="start.sender_btn_title">Transmitir Câmera</h2>
+                    <p class="role-sub" data-i18n="start.sender_btn_sub">Posicione este aparelho no quarto do bebê</p>
                 </div>
-            </div>
-
-            <div class="setting-row">
-                <span class="input-label" data-i18n="start.transport_label">Conexão</span>
-                <div class="segmented-control">
-                    <button type="button" class="segmented-btn transport-option active" data-transport="direct" data-i18n="start.transport_direct">Direto (P2P)</button>
-                    <button type="button" class="segmented-btn transport-option" data-transport="relay" data-i18n="start.transport_relay">Relay</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Action Role Buttons -->
-        <div class="actions-grid">
-            <button class="btn-role role-sender" id="senderBtn" type="button">
-                <span class="role-icon">📹</span>
-                <span class="role-texts">
-                    <span class="role-title" data-i18n="start.sender_btn_title">Celular do Bebê</span>
-                    <span class="role-sub" data-i18n="start.sender_btn_sub">Câmera - Posicione no quarto do bebê</span>
-                </span>
-                <span class="role-arrow">→</span>
             </button>
 
-            <button class="btn-role role-receiver" id="receiverBtn" type="button">
-                <span class="role-icon">👶</span>
-                <span class="role-texts">
-                    <span class="role-title" data-i18n="start.receiver_btn_title">Monitor dos Pais</span>
-                    <span class="role-sub" data-i18n="start.receiver_btn_sub">Receptor - Assista e escute o bebê</span>
-                </span>
-                <span class="role-arrow">→</span>
+            <!-- Mode 2: Monitor dos Pais (Receiver) -->
+            <button class="mode-card mode-card-receiver" id="receiverBtn" type="button" aria-label="Abrir Monitor dos Pais">
+                <div class="mode-card-header">
+                    <div class="mode-badge-icon">👶</div>
+                    <div class="mode-arrow-btn">→</div>
+                </div>
+                <div class="mode-card-body">
+                    <h2 class="role-title" data-i18n="start.receiver_btn_title">Monitor dos Pais</h2>
+                    <p class="role-sub" data-i18n="start.receiver_btn_sub">Assista e escute o bebê ao vivo no tablet ou celular</p>
+                </div>
             </button>
-        </div>
+        </main>
 
-        <!-- System Status Strip -->
-        <div class="status-strip" id="statusCard">
-            <div class="status-dot" id="statusIndicator"></div>
-            <div class="status-info">
-                <span class="status-title" id="statusTitle" data-i18n="start.checking_status">Verificando status...</span>
-                <span class="status-detail" id="statusDetail" data-i18n="start.connecting_server">Conectando ao servidor</span>
+        <!-- Session Configuration Panel -->
+        <section class="session-panel">
+            <div class="session-field-row">
+                <div class="session-input-wrapper">
+                    <label for="sessionInput" data-i18n="start.session_label">Nome da Sessão (Conexão)</label>
+                    <input
+                        type="text"
+                        id="sessionInput"
+                        class="session-input"
+                        data-i18n-placeholder="start.session_placeholder"
+                        placeholder="ex: quarto-bebe, berco-sala"
+                        autocomplete="off"
+                        autocapitalize="none"
+                    >
+                </div>
             </div>
-        </div>
 
-        <!-- Quick Instructions -->
-        <div class="quick-instructions">
-            <div class="instructions-header" data-i18n="start.instructions_title">Início Rápido</div>
-            <ul class="instructions-list">
-                <li data-i18n="start.instructions_step1">Digite o mesmo nome de sessão em ambos os aparelhos.</li>
-                <li data-i18n="start.instructions_step2">No quarto do bebê, abra a Câmera do Bebê.</li>
-                <li data-i18n="start.instructions_step3">No seu aparelho, abra o Monitor dos Pais.</li>
-            </ul>
-        </div>
+            <!-- Discrete Quick Settings -->
+            <div class="quick-settings-bar">
+                <div class="settings-pills-group">
+                    <span class="setting-label-mini" data-i18n="start.quality_label">Vídeo:</span>
+                    <div class="segmented-pill">
+                        <button type="button" class="quality-option" data-quality="sd" data-i18n="start.quality_sd">SD</button>
+                        <button type="button" class="quality-option active" data-quality="hd" data-i18n="start.quality_hd">HD</button>
+                    </div>
+                </div>
+
+                <div class="settings-pills-group">
+                    <span class="setting-label-mini" data-i18n="start.mode_label">Modo:</span>
+                    <div class="segmented-pill">
+                        <button type="button" class="stream-option active" data-mode="av" data-i18n="start.mode_av">Vídeo + Áudio</button>
+                        <button type="button" class="stream-option" data-mode="audio" data-i18n="start.mode_audio">Áudio</button>
+                    </div>
+                </div>
+
+                <div class="settings-pills-group">
+                    <span class="setting-label-mini" data-i18n="start.transport_label">Rota:</span>
+                    <div class="segmented-pill">
+                        <button type="button" class="transport-option active" data-transport="direct" data-i18n="start.transport_direct">Direto</button>
+                        <button type="button" class="transport-option" data-transport="relay" data-i18n="start.transport_relay">Relay</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Connection Status -->
+        <footer class="hub-footer">
+            <div class="status-pill" id="statusCard">
+                <div class="status-dot" id="statusIndicator"></div>
+                <span id="statusTitle" data-i18n="start.checking_status">Verificando status...</span>
+                <span id="statusDetail" style="opacity: 0.65; margin-left: 4px;" data-i18n="start.connecting_server"></span>
+            </div>
+        </footer>
     </div>
 
     <script type="module">
@@ -595,7 +582,7 @@
         });
         updateLangButtons(getLanguage());
 
-        // Session Pre-fill
+        // Pre-fill session from localStorage or default
         const savedSession = localStorage.getItem('babymonitor-session');
         if (savedSession) {
             sessionInput.value = savedSession;
@@ -652,12 +639,12 @@
                 } else {
                     statusIndicator.classList.remove('active');
                     statusTitle.textContent = t('start.session_idle');
-                    statusDetail.textContent = t('start.session_hint');
+                    statusDetail.textContent = '';
                 }
             } catch (err) {
                 statusIndicator.classList.remove('active');
                 statusTitle.textContent = t('start.connecting_server');
-                statusDetail.textContent = t('start.checking_status');
+                statusDetail.textContent = '';
             }
         }
 

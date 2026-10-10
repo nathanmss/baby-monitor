@@ -1576,12 +1576,38 @@ window.addEventListener('resize', () => {
     updateDrawerPosition();
 }, { passive: true });
 
+const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+if (closeDrawerBtn) {
+    closeDrawerBtn.addEventListener('click', closeControlsDrawer);
+}
+
+// Auto-hide / Dark-room Dimming for HUD
+let hudDimTimer = null;
+const HUD_DIM_DELAY = 4000;
+
+function resetHudDimTimer() {
+    document.body.classList.remove('controls-dimmed');
+    clearTimeout(hudDimTimer);
+    if (controlsDrawer?.classList.contains('open')) {
+        return;
+    }
+    hudDimTimer = setTimeout(() => {
+        document.body.classList.add('controls-dimmed');
+    }, HUD_DIM_DELAY);
+}
+
+['pointerdown', 'pointermove', 'touchstart', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, resetHudDimTimer, { passive: true });
+});
+resetHudDimTimer();
+
 // Close drawer when clicking outside
 document.addEventListener('click', (e) => {
     if (controlsDrawer.classList.contains('open') &&
         !controlsDrawer.contains(e.target) &&
         !drawerToggle.contains(e.target)) {
         closeControlsDrawer();
+        resetHudDimTimer();
     }
 }, { passive: true });
 
