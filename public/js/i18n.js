@@ -8,9 +8,9 @@ const STORAGE_KEY = 'babymonitor-lang';
 export const translations = {
     'pt-BR': {
         // Common & Brand
-        'app.title': 'Babá Eletrônica',
-        'app.subtitle': 'Transmissão de áudio e vídeo em tempo real',
-        'app.tagline': 'Monitore seu bebê em tempo real com qualquer celular',
+        'app.title': 'Olho de Sauron Baby',
+        'app.subtitle': 'Monitoramento de áudio e vídeo em tempo real',
+        'app.tagline': 'A visão atenta e segura para o sono do seu bebê',
         'lang.pt': 'Português',
         'lang.en': 'English',
         'lang.switch_title': 'Alterar idioma',
@@ -86,11 +86,11 @@ export const translations = {
 
         // CTA
         'cta.title': 'Pronto para começar?',
-        'cta.desc': 'Configure a babá eletrônica agora mesmo direto pelo navegador.',
-        'cta.button': 'Iniciar Babá Eletrônica',
+        'cta.desc': 'Configure o monitoramento do bebê agora mesmo direto pelo navegador.',
+        'cta.button': 'Iniciar Olho de Sauron Baby',
 
         // Start Page (/start.html)
-        'start.title': 'Iniciar - Babá Eletrônica',
+        'start.title': 'Olho de Sauron Baby',
         'start.session_label': 'Nome da Sessão',
         'start.session_placeholder': 'ex: quarto-bebe, felix-baby, maria-quarto',
         'start.session_hint': 'Escolha um nome único e difícil de adivinhar. Qualquer pessoa com esse nome pode assistir.',
@@ -123,7 +123,7 @@ export const translations = {
         'start.instructions_step4': 'Salve a página nos favoritos para acesso rápido nos próximos dias.',
 
         // Sender Page (/sender.html & /s/:session)
-        'sender.title': 'Babá Eletrônica - Câmera do Bebê',
+        'sender.title': 'Olho de Sauron Baby - Câmera do Bebê',
         'sender.prompt_title': 'Digite o Nome da Sessão',
         'sender.prompt_desc': 'Use um nome único para conectar a câmera ao monitor dos pais',
         'sender.join_btn': 'Entrar na Sessão',
@@ -164,7 +164,7 @@ export const translations = {
         'sender.error_permission': 'Falha ao acessar câmera/microfone: {error}',
 
         // Receiver Page (/receiver.html & /r/:session)
-        'receiver.title': 'Babá Eletrônica - Monitor dos Pais',
+        'receiver.title': 'Olho de Sauron Baby - Monitor dos Pais',
         'receiver.prompt_title': 'Digite o Nome da Sessão',
         'receiver.prompt_desc': 'Use o mesmo nome configurado na câmera do bebê',
         'receiver.header_title': 'Monitor dos Pais',
@@ -179,6 +179,8 @@ export const translations = {
         'receiver.audio_only': 'Somente Áudio',
         'receiver.audio_only_subtext': 'Vídeo desativado na câmera do bebê',
         'receiver.baby': 'Bebê',
+        'receiver.rotate': 'Rotacionar Vídeo',
+        'receiver.rotate_angle': 'Rotação: {angle}°',
         'receiver.ptt_speaking': 'Falando com o bebê...',
         'receiver.ptt_alerting': 'Alertando o bebê...',
         'receiver.ptt_hold_to_talk': 'Segure para falar',
@@ -234,9 +236,9 @@ export const translations = {
     },
     'en-US': {
         // Common & Brand
-        'app.title': 'Baby Monitor',
-        'app.subtitle': 'Real-time audio & video streaming',
-        'app.tagline': 'Monitor your baby in real time with any phone',
+        'app.title': 'Olho de Sauron Baby',
+        'app.subtitle': 'Real-time audio & video baby monitor',
+        'app.tagline': 'Vigilant, private and reliable baby monitoring',
         'lang.pt': 'Português',
         'lang.en': 'English',
         'lang.switch_title': 'Change language',
@@ -311,12 +313,12 @@ export const translations = {
         'open.button': 'View on GitHub',
 
         // CTA
-        'cta.title': 'Ready to Get Started?',
+        'cta.title': 'Ready to begin?',
         'cta.desc': 'Set up your baby monitor in under a minute directly in your browser.',
-        'cta.button': 'Launch Baby Monitor',
+        'cta.button': 'Launch Olho de Sauron Baby',
 
         // Start Page (/start.html)
-        'start.title': 'Start - Baby Monitor',
+        'start.title': 'Olho de Sauron Baby',
         'start.session_label': 'Session Name',
         'start.session_placeholder': 'e.g., nursery, baby-cam, felix-baby',
         'start.session_hint': 'Pick something unique — this name is your password. Anyone who knows it can watch.',
@@ -349,7 +351,7 @@ export const translations = {
         'start.instructions_step4': 'Bookmark the URL for instant access tomorrow.',
 
         // Sender Page (/sender.html & /s/:session)
-        'sender.title': "Baby Monitor - Baby's Phone",
+        'sender.title': "Olho de Sauron Baby - Baby's Camera",
         'sender.prompt_title': 'Enter Session Name',
         'sender.prompt_desc': 'Use a unique name to connect sender and receiver',
         'sender.join_btn': 'Join Session',
@@ -390,7 +392,7 @@ export const translations = {
         'sender.error_permission': 'Failed to access camera/microphone: {error}',
 
         // Receiver Page (/receiver.html & /r/:session)
-        'receiver.title': "Baby Monitor - Parent's Phone",
+        'receiver.title': "Olho de Sauron Baby - Parent's Monitor",
         'receiver.prompt_title': 'Enter Session Name',
         'receiver.prompt_desc': 'Use the same name as the sender to connect',
         'receiver.header_title': "Parent's Phone",
@@ -405,6 +407,8 @@ export const translations = {
         'receiver.audio_only': 'Audio Only',
         'receiver.audio_only_subtext': 'Video disabled on sender',
         'receiver.baby': 'Baby',
+        'receiver.rotate': 'Rotate Video',
+        'receiver.rotate_angle': 'Rotation: {angle}°',
         'receiver.ptt_speaking': 'Speaking...',
         'receiver.ptt_alerting': 'Alerting sender...',
         'receiver.ptt_hold_to_talk': 'Hold to talk to baby',

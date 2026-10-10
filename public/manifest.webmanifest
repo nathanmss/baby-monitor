@@ -1,13 +1,13 @@
 {
-  "name": "Babá Eletrônica - Baby Monitor",
-  "short_name": "Babá Eletrônica",
-  "description": "Transmissão de áudio e vídeo em tempo real entre celulares para monitoramento de bebês.",
-  "start_url": "/start.html",
+  "name": "Olho de Sauron Baby",
+  "short_name": "Olho de Sauron Baby",
+  "description": "Monitor de bebê em tempo real - Olho de Sauron Baby",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#0a0e1a",
-  "theme_color": "#0a0e1a",
+  "orientation": "any",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
   "lang": "pt-BR",
   "categories": ["utilities", "lifestyle"],
   "icons": [
@@ -32,16 +32,16 @@
   ],
   "shortcuts": [
     {
-      "name": "Celular do Bebê (Câmera)",
+      "name": "Olho de Sauron Baby - Câmera",
       "short_name": "Câmera",
-      "description": "Abrir câmera do quarto do bebê",
+      "description": "Abrir câmera do bebê",
       "url": "/sender",
       "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
     },
     {
-      "name": "Monitor dos Pais",
+      "name": "Olho de Sauron Baby - Monitor",
       "short_name": "Monitor",
-      "description": "Abrir visualizador dos pais",
+      "description": "Abrir monitor dos pais",
       "url": "/receiver",
       "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
     }

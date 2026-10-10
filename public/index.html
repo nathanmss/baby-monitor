@@ -2,12 +2,12 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="app.title">Babá Eletrônica - Free Open Source WebRTC Baby Monitor</title>
-    <meta name="description" content="Turn any two phones into a baby monitor. Real-time HD video & audio streaming with no app required. Free, open source, and privacy-focused.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title data-i18n="start.title">Olho de Sauron Baby</title>
+    <meta name="description" content="Monitor de bebê em tempo real - Olho de Sauron Baby">
     
     <!-- PWA & Mobile Meta Tags -->
-    <meta name="theme-color" content="#0a0e1a">
+    <meta name="theme-color" content="#09090b">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,9 +15,6 @@
     <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
     <link rel="apple-touch-icon" href="/icons/icon.svg">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -26,162 +23,93 @@
         }
 
         :root {
-            --night: #0a0e1a;
-            --night-soft: #141b2d;
-            --night-lighter: #1e2942;
-            --glow: #f6c177;
-            --glow-soft: #fad4a1;
-            --glow-dim: rgba(246, 193, 119, 0.15);
-            --mint: #9ccfd8;
-            --rose: #ebbcba;
-            --text: #e0def4;
-            --text-muted: #908caa;
-            --text-subtle: #6e6a86;
+            --bg-oled: #09090b;
+            --bg-surface: #121214;
+            --bg-card: #18181b;
+            --bg-subtle: #27272a;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(217, 119, 6, 0.35);
+            --accent-amber: #d97706;
+            --accent-amber-dark: #b45309;
+            --accent-amber-subtle: rgba(217, 119, 6, 0.12);
+            --status-green: #16a34a;
+            --status-red: #dc2626;
+            --text-primary: #f4f4f5;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --radius-lg: 16px;
+            --radius-md: 10px;
         }
 
-        html {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
+        html, body {
+            min-height: 100%;
+            background-color: var(--bg-oled);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Geist", sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--night);
-            color: var(--text);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        /* Grain overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 10000;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Fraunces', serif;
-            font-weight: 600;
-            line-height: 1.2;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 1.25rem 2rem;
-            background: rgba(10, 14, 26, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(246, 193, 119, 0.1);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        nav.scrolled {
-            padding: 0.875rem 2rem;
-            background: rgba(10, 14, 26, 0.95);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Top header bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .logo {
-            font-family: 'Fraunces', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--glow);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: radial-gradient(circle at 30% 30%, var(--glow), var(--glow-soft));
-            border-radius: 50%;
-            box-shadow: 0 0 20px var(--glow-dim), 0 0 40px var(--glow-dim);
-            animation: gentle-pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes gentle-pulse {
-            0%, 100% { box-shadow: 0 0 20px var(--glow-dim), 0 0 40px var(--glow-dim); }
-            50% { box-shadow: 0 0 30px rgba(246, 193, 119, 0.3), 0 0 60px var(--glow-dim); }
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            letter-spacing: 0.02em;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-links a:not(.nav-cta):hover {
-            color: var(--text);
-        }
-
-        .nav-links a:not(.nav-cta)::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--glow);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:not(.nav-cta):hover::after {
             width: 100%;
         }
 
-        .nav-cta {
-            background: var(--glow);
-            color: var(--night) !important;
-            padding: 0.65rem 1.5rem;
-            border-radius: 100px;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 20px var(--glow-dim);
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: inherit;
         }
 
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(246, 193, 119, 0.4);
+        .sauron-eye {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%, #fbbf24 0%, #d97706 50%, #78350f 100%);
+            position: relative;
+            box-shadow: 0 0 16px rgba(217, 119, 6, 0.35);
+            flex-shrink: 0;
+        }
+
+        .sauron-pupil {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 5px;
+            height: 18px;
+            background: #09090b;
+            border-radius: 4px;
         }
 
         /* Language Switcher */
         .lang-switcher {
             display: inline-flex;
             align-items: center;
-            background: rgba(30, 41, 66, 0.6);
-            border: 1px solid rgba(246, 193, 119, 0.2);
-            border-radius: 100px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
             padding: 2px;
             gap: 2px;
         }
@@ -189,1497 +117,557 @@
         .lang-btn {
             display: inline-flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             background: transparent;
             border: none;
-            border-radius: 100px;
-            padding: 3px 8px;
+            border-radius: 16px;
+            padding: 6px 10px;
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-muted);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
+            min-height: 32px;
         }
 
         .lang-btn.active {
-            background: var(--glow);
-            color: var(--night);
-            box-shadow: 0 2px 8px rgba(246, 193, 119, 0.3);
+            background: var(--accent-amber);
+            color: #09090b;
         }
 
         .lang-btn:not(.active):hover {
-            color: var(--text);
+            color: var(--text-primary);
         }
 
-        .lang-flag {
-            font-size: 0.85rem;
-            line-height: 1;
+        /* Main header */
+        .header-content {
+            text-align: center;
+            padding: 8px 0 12px;
         }
 
-        .lang-text {
-            font-size: 0.7rem;
-            letter-spacing: 0.05em;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 10rem 2rem 6rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Ambient background orbs */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 10%;
-            right: -10%;
-            width: 60%;
-            height: 80%;
-            background: radial-gradient(ellipse at center, rgba(246, 193, 119, 0.08) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -20%;
-            left: -20%;
-            width: 60%;
-            height: 80%;
-            background: radial-gradient(ellipse at center, rgba(156, 207, 216, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .hero-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 6rem;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-content {
-            animation: fade-up 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            opacity: 0;
-        }
-
-        @keyframes fade-up {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--glow-dim);
-            border: 1px solid rgba(246, 193, 119, 0.2);
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--glow);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-eyebrow::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--glow);
-            border-radius: 50%;
-            animation: blink 2s ease-in-out infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .hero-content h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+        h1 {
+            font-size: 1.65rem;
             font-weight: 700;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--text) 0%, var(--glow-soft) 50%, var(--text) 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 8s linear infinite;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
         }
 
-        @keyframes shimmer {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
+        .subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
         }
 
-        .hero-content p {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            margin-bottom: 2.5rem;
-            max-width: 500px;
-            line-height: 1.8;
+        /* Card styles */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
         }
 
-        .hero-buttons {
+        .input-group {
             display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-bottom: 3rem;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 2rem;
-            border-radius: 100px;
+        .input-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .session-input {
+            width: 100%;
+            padding: 14px 16px;
             font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
+            font-family: inherit;
+            background: var(--bg-oled);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            transition: border-color 0.15s, box-shadow 0.15s;
+            min-height: 48px;
+        }
+
+        .session-input:focus {
+            outline: none;
+            border-color: var(--accent-amber);
+            box-shadow: 0 0 0 3px var(--accent-amber-subtle);
+        }
+
+        .session-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .session-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-top: 4px;
+        }
+
+        /* Configuration settings inside card */
+        .setting-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 16px 0;
+        }
+
+        .setting-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .setting-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .segmented-control {
+            display: inline-flex;
+            background: var(--bg-oled);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .segmented-btn {
             border: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--glow) 0%, #e5a84d 100%);
-            color: var(--night);
-            box-shadow: 0 4px 30px rgba(246, 193, 119, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 40px rgba(246, 193, 119, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-secondary {
             background: transparent;
-            color: var(--text);
-            border: 1px solid var(--night-lighter);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--text-subtle);
-            background: var(--night-soft);
-            transform: translateY(-3px);
-        }
-
-        .btn svg {
-            width: 18px;
-            height: 18px;
-            transition: transform 0.3s;
-        }
-
-        .btn-primary:hover svg {
-            transform: translateX(3px);
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 3rem;
-        }
-
-        .stat {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stat-value {
-            font-family: 'Fraunces', serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--glow);
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-subtle);
-            letter-spacing: 0.02em;
-        }
-
-        /* Phone Visual */
-        .hero-visual {
-            position: relative;
-            animation: fade-up 1s 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            opacity: 0;
-            overflow: hidden;
-        }
-
-        .phone-scene {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
-
-        .phone-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(246, 193, 119, 0.15) 0%, transparent 70%);
-            filter: blur(40px);
-            animation: breathe 6s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-        }
-
-        .phones-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .phone {
-            width: 160px;
-            height: 340px;
-            background: linear-gradient(165deg, #2a2f42 0%, #1a1e2e 100%);
-            border-radius: 32px;
-            padding: 8px;
-            box-shadow:
-                0 25px 60px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.05),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            position: relative;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .phone-sender {
-            transform: rotate(-8deg) translateY(20px);
-        }
-
-        .phone-receiver {
-            transform: rotate(8deg) translateY(-20px);
-        }
-
-        .phone:hover {
-            transform: rotate(0deg) translateY(0) scale(1.05);
-        }
-
-        .phone-screen {
-            width: 100%;
-            height: 100%;
-            border-radius: 26px;
-            overflow: hidden;
-            position: relative;
-            background: var(--night);
-        }
-
-        .phone-sender .phone-screen {
-            background: linear-gradient(180deg, #1a1e2e 0%, #0f1219 100%);
-        }
-
-        .phone-receiver .phone-screen {
-            background: linear-gradient(180deg, var(--night-soft) 0%, var(--night) 100%);
-        }
-
-        .phone-notch {
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 22px;
-            background: #1a1e2e;
-            border-radius: 20px;
-            z-index: 10;
-        }
-
-        .phone-content {
-            padding: 50px 15px 15px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .phone-sender .phone-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--night-lighter) 0%, var(--night-soft) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            border: 2px solid var(--glow-dim);
-            position: relative;
-        }
-
-        .phone-sender .phone-icon::before {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: #ef4444;
-            border-radius: 50%;
-            top: 4px;
-            right: 4px;
-            animation: rec-blink 1.5s ease-in-out infinite;
-        }
-
-        @keyframes rec-blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .phone-sender .phone-icon svg {
-            width: 28px;
-            height: 28px;
             color: var(--text-muted);
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-height: 32px;
         }
 
-        .phone-receiver .phone-content {
-            justify-content: flex-start;
-            padding-top: 40px;
+        .segmented-btn.active {
+            background: var(--accent-amber);
+            color: #09090b;
         }
 
-        .video-preview {
+        .segmented-btn:not(.active):hover {
+            color: var(--text-primary);
+        }
+
+        /* Role action buttons */
+        .actions-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .btn-role {
+            display: flex;
+            align-items: center;
+            gap: 14px;
             width: 100%;
-            height: 180px;
-            background: linear-gradient(180deg, #2a3040 0%, #1e2432 100%);
+            padding: 16px 18px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            min-height: 64px;
+            text-decoration: none;
+        }
+
+        .btn-role:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-role:active {
+            transform: translateY(0);
+        }
+
+        .role-sender {
+            border-color: rgba(217, 119, 6, 0.25);
+            background: linear-gradient(180deg, #18181b 0%, #121214 100%);
+        }
+
+        .role-receiver {
+            border-color: rgba(217, 119, 6, 0.4);
+            background: linear-gradient(180deg, #201a14 0%, #141210 100%);
+        }
+
+        .role-icon {
+            font-size: 1.5rem;
+            width: 44px;
+            height: 44px;
             border-radius: 12px;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .video-preview::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(ellipse at 30% 40%, rgba(246, 193, 119, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 60%, rgba(156, 207, 216, 0.05) 0%, transparent 50%);
-        }
-
-        .video-preview-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--glow-dim);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-        }
-
-        .video-preview-icon svg {
-            width: 24px;
-            height: 24px;
-            color: var(--glow);
-        }
-
-        .phone-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .phone-status {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            margin-top: 0.5rem;
-            font-size: 0.7rem;
-            color: var(--mint);
-        }
-
-        .phone-status::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--mint);
-            border-radius: 50%;
-        }
-
-        /* Connection beam */
-        .connection-beam {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 3px;
-            z-index: 2;
-        }
-
-        .beam-line {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 0%, var(--glow) 50%, transparent 100%);
-            border-radius: 10px;
-            opacity: 0.6;
-        }
-
-        .beam-particles {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 20px;
-            transform: translateY(-50%);
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--glow);
-            border-radius: 50%;
-            animation: flow 2s linear infinite;
-            box-shadow: 0 0 6px var(--glow);
-        }
-
-        .particle:nth-child(1) { animation-delay: 0s; }
-        .particle:nth-child(2) { animation-delay: 0.5s; }
-        .particle:nth-child(3) { animation-delay: 1s; }
-        .particle:nth-child(4) { animation-delay: 1.5s; }
-
-        @keyframes flow {
-            0% { left: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { left: 100%; opacity: 0; }
-        }
-
-        /* Features Section */
-        .features {
-            padding: 8rem 2rem;
-            position: relative;
-        }
-
-        .section-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 5rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .section-label {
-            display: inline-block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--glow);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-
-        .section-header h2 {
-            font-size: clamp(2rem, 4vw, 2.75rem);
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-
-        .section-header p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-        }
-
-        .feature-card {
-            padding: 2rem;
-            background: linear-gradient(165deg, var(--night-soft) 0%, var(--night) 100%);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, rgba(246, 193, 119, 0.3) 50%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(246, 193, 119, 0.1);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
-        .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--glow-dim);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.25rem;
-            font-size: 1.5rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.6rem;
-            color: var(--text);
-        }
-
-        .feature-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        /* How It Works */
-        .how-it-works {
-            padding: 8rem 2rem;
-            position: relative;
-        }
-
-        .how-it-works::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse at 20% 50%, rgba(246, 193, 119, 0.05) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 50%, rgba(156, 207, 216, 0.03) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .step {
-            text-align: center;
-            padding: 2rem 1.5rem;
-            position: relative;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--glow) 0%, #e5a84d 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Fraunces', serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--night);
-            margin: 0 auto 1.5rem;
-            box-shadow: 0 8px 30px rgba(246, 193, 119, 0.3);
-        }
-
-        .step h3 {
-            font-size: 1.15rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--text);
-        }
-
-        .step p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        /* Connecting line between steps */
-        .steps::before {
-            content: '';
-            position: absolute;
-            top: 30px;
-            left: 15%;
-            right: 15%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent 0%, var(--glow-dim) 20%, var(--glow-dim) 80%, transparent 100%);
-        }
-
-        /* Tech & Open Source Section */
-        .open-source {
-            padding: 8rem 2rem;
-            background: var(--night-soft);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .open-source::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 60%;
-            height: 200%;
-            background: radial-gradient(ellipse at center, rgba(246, 193, 119, 0.03) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .open-source-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-            max-width: 100%;
-            min-width: 0;
-        }
-
-        .open-source-text h2 {
-            font-size: clamp(2rem, 4vw, 2.5rem);
-            margin-bottom: 1.5rem;
-        }
-
-        .open-source-text > p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            line-height: 1.8;
-        }
-
-        .feature-list {
-            list-style: none;
-            display: grid;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .feature-list li {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-weight: 500;
-        }
-
-        .feature-list li::before {
-            content: '';
-            width: 24px;
-            height: 24px;
-            background: var(--glow-dim);
-            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23f6c177' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: center;
+            border: 1px solid var(--border-color);
         }
 
-        /* Tech Stack Visual */
-        .tech-visual {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            min-width: 0;
-            width: 100%;
+        .role-texts {
+            flex: 1;
         }
 
-        .tech-card {
-            background: linear-gradient(165deg, var(--night-lighter) 0%, var(--night-soft) 100%);
-            padding: 1.5rem;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .tech-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--glow-dim);
-        }
-
-        .tech-card-icon {
-            font-size: 2rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .tech-card h4 {
-            font-size: 0.95rem;
+        .role-title {
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: var(--text);
+            color: var(--text-primary);
+            margin-bottom: 2px;
         }
 
-        .tech-card p {
-            font-size: 0.8rem;
-            color: var(--text-subtle);
+        .role-sub {
+            font-size: 0.775rem;
+            color: var(--text-secondary);
         }
 
-        /* CTA Section */
-        .cta {
-            padding: 8rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 400px;
-            background: radial-gradient(ellipse at center, rgba(246, 193, 119, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .cta-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta h2 {
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-bottom: 1rem;
-        }
-
-        .cta p {
-            font-size: 1.15rem;
+        .role-arrow {
             color: var(--text-muted);
-            margin-bottom: 2.5rem;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: 1.1rem;
+            transition: transform 0.15s, color 0.15s;
         }
 
-        /* Footer */
-        footer {
-            padding: 3rem 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        .btn-role:hover .role-arrow {
+            color: var(--accent-amber);
+            transform: translateX(3px);
         }
 
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* Status card */
+        .status-strip {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
         }
 
-        .footer-logo {
-            font-family: 'Fraunces', serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--glow);
-            text-decoration: none;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-            color: var(--text);
-        }
-
-        .footer-social a {
-            width: 40px;
-            height: 40px;
-            background: var(--night-soft);
+        .status-dot {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            background: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .status-dot.active {
+            background: var(--status-green);
+            box-shadow: 0 0 8px rgba(22, 163, 74, 0.5);
+        }
+
+        .status-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .status-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .status-detail {
+            font-size: 0.725rem;
             color: var(--text-muted);
-            transition: all 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .footer-social a:hover {
-            background: var(--glow-dim);
-            color: var(--glow);
-            border-color: var(--glow-dim);
-            transform: translateY(-3px);
+        /* Quick hints */
+        .quick-instructions {
+            padding: 14px 16px;
+            border-radius: var(--radius-md);
+            background: rgba(24, 24, 27, 0.5);
+            border: 1px solid var(--border-color);
         }
 
-        .footer-social svg {
-            width: 18px;
-            height: 18px;
-            fill: currentColor;
+        .instructions-header {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
         }
 
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            z-index: 1001;
+        .instructions-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        .mobile-menu-btn span {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: var(--text);
-            margin: 6px 0;
-            border-radius: 2px;
-            transition: all 0.3s;
+        .instructions-list li {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
         }
 
-        .mobile-menu-btn.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
-        }
-
-        .mobile-menu-btn.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .mobile-menu-btn.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .hero-container {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 4rem;
-            }
-
-            .hero-content p {
-                margin: 0 auto 2.5rem;
-            }
-
-            .hero-buttons {
-                justify-content: center;
-            }
-
-            .hero-stats {
-                justify-content: center;
-            }
-
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .steps {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .steps::before {
-                display: none;
-            }
-
-            .open-source-grid {
-                grid-template-columns: 1fr;
-                gap: 4rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                flex-direction: column;
-                background: rgba(10, 14, 26, 0.98);
-                backdrop-filter: blur(20px);
-                padding: 1rem 1.5rem 1.5rem;
-                gap: 0;
-                border-bottom: 1px solid rgba(246, 193, 119, 0.1);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            }
-
-            .nav-links.open {
-                display: flex;
-            }
-
-            .nav-links a {
-                padding: 1rem 0;
-                font-size: 1rem;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                width: 100%;
-            }
-
-            .nav-links a:last-child {
-                border-bottom: none;
-            }
-
-            .nav-links a:not(.nav-cta)::after {
-                display: none;
-            }
-
-            .nav-cta {
-                margin-top: 0.75rem;
-                text-align: center;
-                justify-content: center;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .hero {
-                padding: 8rem 1.5rem 4rem;
-            }
-
-            .hero-content h1 {
-                font-size: 2.25rem;
-            }
-
-            .hero-stats {
-                gap: 2rem;
-            }
-
-            .phone {
-                width: 130px;
-                height: 280px;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .steps {
-                grid-template-columns: 1fr;
-            }
-
-            .tech-visual {
-                grid-template-columns: repeat(2, 1fr);
-                width: 100%;
-                max-width: 100%;
-            }
-
-            .tech-card {
-                padding: 1rem;
-                min-width: 0;
-            }
-
-            .tech-card-icon {
-                font-size: 1.5rem;
-            }
-
-            .tech-card h4 {
-                font-size: 0.85rem;
-            }
-
-            .tech-card p {
-                font-size: 0.75rem;
-            }
-
-            .open-source {
-                padding: 6rem 1.5rem;
-            }
-
-            .footer-container {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .footer-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .phone {
-                width: 110px;
-                height: 240px;
-            }
-
-            .phones-wrapper {
-                gap: 1rem;
-            }
-
-            .phone-scene {
-                padding: 1rem;
-            }
-
-            .phone-sender {
-                transform: rotate(-6deg) translateY(15px);
-            }
-
-            .phone-receiver {
-                transform: rotate(6deg) translateY(-15px);
-            }
-
-            .connection-beam {
-                width: 60px;
-            }
-
-            .video-preview {
-                height: 140px;
-            }
-
-            .hero-stats {
-                gap: 1.5rem;
-            }
-
-            .stat-value {
-                font-size: 1.5rem;
-            }
+        .instructions-list li::before {
+            content: "•";
+            color: var(--accent-amber);
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <a href="/" class="logo">
-                <div class="logo-icon"></div>
-                <span data-i18n="app.title">Babá Eletrônica</span>
-            </a>
-            <div class="nav-links">
-                <a href="#features" data-i18n="nav.features">Recursos</a>
-                <a href="#how-it-works" data-i18n="nav.how_it_works">Como Funciona</a>
-                <a href="#open-source" data-i18n="open.label">Código Aberto</a>
-                <a href="https://github.com/felschatz/baby-monitor" target="_blank" rel="noopener" data-i18n="nav.github">GitHub</a>
-                <div id="navLangSwitcher" class="lang-switcher-auto"></div>
-                <a href="/start.html" class="nav-cta" data-i18n="nav.get_started">Começar Agora</a>
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <div class="top-bar">
+            <div class="brand-badge">
+                <div class="sauron-eye">
+                    <div class="sauron-pupil"></div>
+                </div>
             </div>
-            <button class="mobile-menu-btn" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div id="langSwitcher" class="lang-switcher">
+                <button type="button" class="lang-btn active" data-lang="pt-BR">
+                    <span>BR</span>
+                </button>
+                <button type="button" class="lang-btn" data-lang="en-US">
+                    <span>EN</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header-content">
+            <h1 data-i18n="app.title">Olho de Sauron Baby</h1>
+            <p class="subtitle" data-i18n="app.subtitle">Monitoramento de áudio e vídeo em tempo real</p>
+        </div>
+
+        <!-- Session & Config Card -->
+        <div class="card">
+            <div class="input-group">
+                <label class="input-label" for="sessionInput" data-i18n="start.session_label">Nome da Sessão</label>
+                <input
+                    type="text"
+                    id="sessionInput"
+                    class="session-input"
+                    data-i18n-placeholder="start.session_placeholder"
+                    placeholder="ex: quarto-bebe, felix-baby"
+                    autocomplete="off"
+                    autocapitalize="none"
+                >
+                <p class="session-hint" data-i18n="start.session_hint">Escolha um nome único e difícil de adivinhar. Qualquer pessoa com esse nome pode assistir.</p>
+            </div>
+
+            <div class="setting-divider"></div>
+
+            <div class="setting-row">
+                <span class="input-label" data-i18n="start.quality_label">Qualidade</span>
+                <div class="segmented-control">
+                    <button type="button" class="segmented-btn quality-option" data-quality="sd" data-i18n="start.quality_sd">SD</button>
+                    <button type="button" class="segmented-btn quality-option active" data-quality="hd" data-i18n="start.quality_hd">HD</button>
+                </div>
+            </div>
+
+            <div class="setting-row">
+                <span class="input-label" data-i18n="start.mode_label">Modo</span>
+                <div class="segmented-control">
+                    <button type="button" class="segmented-btn stream-option active" data-mode="av" data-i18n="start.mode_av">Vídeo + Áudio</button>
+                    <button type="button" class="segmented-btn stream-option" data-mode="audio" data-i18n="start.mode_audio">Somente Áudio</button>
+                </div>
+            </div>
+
+            <div class="setting-row">
+                <span class="input-label" data-i18n="start.transport_label">Conexão</span>
+                <div class="segmented-control">
+                    <button type="button" class="segmented-btn transport-option active" data-transport="direct" data-i18n="start.transport_direct">Direto (P2P)</button>
+                    <button type="button" class="segmented-btn transport-option" data-transport="relay" data-i18n="start.transport_relay">Relay</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Role Buttons -->
+        <div class="actions-grid">
+            <button class="btn-role role-sender" id="senderBtn" type="button">
+                <span class="role-icon">📹</span>
+                <span class="role-texts">
+                    <span class="role-title" data-i18n="start.sender_btn_title">Celular do Bebê</span>
+                    <span class="role-sub" data-i18n="start.sender_btn_sub">Câmera - Posicione no quarto do bebê</span>
+                </span>
+                <span class="role-arrow">→</span>
+            </button>
+
+            <button class="btn-role role-receiver" id="receiverBtn" type="button">
+                <span class="role-icon">👶</span>
+                <span class="role-texts">
+                    <span class="role-title" data-i18n="start.receiver_btn_title">Monitor dos Pais</span>
+                    <span class="role-sub" data-i18n="start.receiver_btn_sub">Receptor - Assista e escute o bebê</span>
+                </span>
+                <span class="role-arrow">→</span>
             </button>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <div class="hero-eyebrow" data-i18n="hero.badge">100% Gratuito & Open Source</div>
-                <h1 data-i18n="hero.title">Transforme celulares antigos em uma babá eletrônica inteligente</h1>
-                <p data-i18n="hero.desc">Transmissão direta de vídeo e áudio em alta definição com baixíssima latência entre dispositivos. Sem criar conta, sem intermediários e com total privacidade.</p>
-
-                <div class="hero-buttons">
-                    <a href="/start.html" class="btn btn-primary">
-                        <span data-i18n="hero.cta_start">Usar Agora</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </a>
-                    <a href="https://github.com/felschatz/baby-monitor" target="_blank" rel="noopener" class="btn btn-secondary">
-                        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                        <span data-i18n="open.button">Ver no GitHub</span>
-                    </a>
-                </div>
-
-                <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-value" data-i18n="hero.stat_latency">&lt; 200ms</span>
-                        <span class="stat-label" data-i18n="hero.stat_latency_label">Baixa Latência</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-value" data-i18n="hero.stat_privacy">100%</span>
-                        <span class="stat-label" data-i18n="hero.stat_privacy_label">Privado (P2P)</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-value" data-i18n="hero.stat_price">R$ 0</span>
-                        <span class="stat-label" data-i18n="hero.stat_price_label">Gratuito Sempre</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hero-visual">
-                <div class="phone-scene">
-                    <div class="phone-glow"></div>
-                    <div class="phones-wrapper">
-                        <div class="phone phone-sender">
-                            <div class="phone-screen">
-                                <div class="phone-notch"></div>
-                                <div class="phone-content">
-                                    <div class="phone-icon">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M23 7l-7 5 7 5V7z"/>
-                                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-                                        </svg>
-                                    </div>
-                                    <span class="phone-label" data-i18n="hero.sender_phone">Celular do Bebê</span>
-                                    <span class="phone-status" data-i18n="hero.streaming_live">Ao vivo</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="connection-beam">
-                            <div class="beam-line"></div>
-                            <div class="beam-particles">
-                                <span class="particle"></span>
-                                <span class="particle"></span>
-                                <span class="particle"></span>
-                                <span class="particle"></span>
-                            </div>
-                        </div>
-
-                        <div class="phone phone-receiver">
-                            <div class="phone-screen">
-                                <div class="phone-notch"></div>
-                                <div class="phone-content">
-                                    <div class="video-preview">
-                                        <div class="video-preview-icon">
-                                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <span class="phone-label" data-i18n="hero.receiver_phone">Monitor dos Pais</span>
-                                    <span class="phone-status" data-i18n="sender.connected">Conectado</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- System Status Strip -->
+        <div class="status-strip" id="statusCard">
+            <div class="status-dot" id="statusIndicator"></div>
+            <div class="status-info">
+                <span class="status-title" id="statusTitle" data-i18n="start.checking_status">Verificando status...</span>
+                <span class="status-detail" id="statusDetail" data-i18n="start.connecting_server">Conectando ao servidor</span>
             </div>
         </div>
-    </section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-label" data-i18n="features.section_label">Recursos</span>
-                <h2 data-i18n="features.section_title">Tudo o que você precisa para a segurança do bebê</h2>
-                <p data-i18n="features.section_desc">Desenvolvido por pais e para pais, com foco em estabilidade, privacidade e simplicidade.</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📺</div>
-                    <h3 data-i18n="features.webrtc_title">Transmissão em Tempo Real</h3>
-                    <p data-i18n="features.webrtc_desc">Vídeo e áudio diretos de ponta a ponta com baixíssima latência via WebRTC.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🔊</div>
-                    <h3 data-i18n="features.alerts_title">Alertas Visuais e Sonoros</h3>
-                    <p data-i18n="features.alerts_desc">Indicadores de som alto, perda de conexão e medidor de intensidade de áudio.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🎙️</div>
-                    <h3 data-i18n="features.ptt_title">Segure para Falar (PTT)</h3>
-                    <p data-i18n="features.ptt_desc">Fale com o bebê diretamente do celular dos pais para acalmá-lo de qualquer cômodo.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🎵</div>
-                    <h3 data-i18n="features.lullabies_title">Músicas e Canções de Ninar</h3>
-                    <p data-i18n="features.lullabies_desc">Toque canções de ninar ou ruído branco no quarto com temporizador programável.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3 data-i18n="features.privacy_title">Privacidade Absoluta</h3>
-                    <p data-i18n="features.privacy_desc">Nenhum vídeo ou áudio é gravado ou armazenado em servidores externos.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
-                    <h3 data-i18n="features.multi_title">Múltiplos Monitores</h3>
-                    <p data-i18n="features.multi_desc">Pai e mãe podem acompanhar a transmissão simultaneamente em aparelhos separados.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">📶</div>
-                    <h3 data-i18n="start.mode_audio">Somente Áudio</h3>
-                    <p data-i18n="start.mode_hint">Somente áudio economiza bateria e consome menos dados.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🌐</div>
-                    <h3 data-i18n="features.relay_title">Servidor Relay Integrado</h3>
-                    <p data-i18n="features.relay_desc">Conecte-se mesmo em redes restritivas onde conexões P2P diretas são bloqueadas.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🔋</div>
-                    <h3 data-i18n="features.battery_title">Economia de Bateria</h3>
-                    <p data-i18n="features.battery_desc">Tela do bebê escurece automaticamente mantendo a câmera e o microfone ativos.</p>
-                </div>
-            </div>
+        <!-- Quick Instructions -->
+        <div class="quick-instructions">
+            <div class="instructions-header" data-i18n="start.instructions_title">Início Rápido</div>
+            <ul class="instructions-list">
+                <li data-i18n="start.instructions_step1">Digite o mesmo nome de sessão em ambos os aparelhos.</li>
+                <li data-i18n="start.instructions_step2">No quarto do bebê, abra a Câmera do Bebê.</li>
+                <li data-i18n="start.instructions_step3">No seu aparelho, abra o Monitor dos Pais.</li>
+            </ul>
         </div>
-    </section>
+    </div>
 
-    <!-- How It Works -->
-    <section class="how-it-works" id="how-it-works">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-label" data-i18n="how.section_label">Passo a Passo</span>
-                <h2 data-i18n="how.section_title">Pronto para uso em 30 segundos</h2>
-                <p data-i18n="how.section_desc">Sem cadastros, sem senhas complicadas e sem burocracia.</p>
-            </div>
+    <script type="module">
+        import { t, setLanguage, getLanguage, onLanguageChange } from '/js/i18n.js';
 
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3 data-i18n="how.step1_title">Crie uma Sessão</h3>
-                    <p data-i18n="how.step1_desc">Escolha um nome único para o quarto do bebê (ex: bebe-quarto).</p>
-                </div>
+        const sessionInput = document.getElementById('sessionInput');
+        const senderBtn = document.getElementById('senderBtn');
+        const receiverBtn = document.getElementById('receiverBtn');
+        const qualityOptions = document.querySelectorAll('.quality-option');
+        const streamOptions = document.querySelectorAll('.stream-option');
+        const transportOptions = document.querySelectorAll('.transport-option');
+        const langButtons = document.querySelectorAll('.lang-btn');
 
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3 data-i18n="how.step2_title">Abra a Câmera do Bebê</h3>
-                    <p data-i18n="how.step2_desc">No celular que ficará no quarto, abra o modo Câmera e permita acesso.</p>
-                </div>
+        // Quality toggle
+        let selectedQuality = 'hd';
+        qualityOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                qualityOptions.forEach(o => o.classList.remove('active'));
+                option.classList.add('active');
+                selectedQuality = option.dataset.quality;
+            });
+        });
 
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3 data-i18n="how.step3_title">Abra o Monitor dos Pais</h3>
-                    <p data-i18n="how.step3_desc">No seu celular, abra com o mesmo nome de sessão para assistir e ouvir.</p>
-                </div>
+        // Stream mode toggle
+        let selectedMode = localStorage.getItem('babymonitor-stream-mode') || 'av';
+        function setStreamMode(mode) {
+            selectedMode = mode === 'audio' ? 'audio' : 'av';
+            streamOptions.forEach(option => {
+                option.classList.toggle('active', option.dataset.mode === selectedMode);
+            });
+            localStorage.setItem('babymonitor-stream-mode', selectedMode);
+        }
+        streamOptions.forEach(option => {
+            option.addEventListener('click', () => setStreamMode(option.dataset.mode));
+        });
+        setStreamMode(selectedMode);
 
-                <div class="step">
-                    <div class="step-number">⭐</div>
-                    <h3 data-i18n="how.step4_title">Salve nos Favoritos</h3>
-                    <p data-i18n="how.step4_desc">Adicione aos favoritos ou instale como app para abrir com 1 toque todos os dias.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        // Transport toggle
+        let selectedTransport = localStorage.getItem('babymonitor-transport-mode') === 'relay' ? 'relay' : 'direct';
+        function setTransportMode(mode) {
+            selectedTransport = mode === 'relay' ? 'relay' : 'direct';
+            transportOptions.forEach(option => {
+                option.classList.toggle('active', option.dataset.transport === selectedTransport);
+            });
+            localStorage.setItem('babymonitor-transport-mode', selectedTransport);
+        }
+        transportOptions.forEach(option => {
+            option.addEventListener('click', () => setTransportMode(option.dataset.transport));
+        });
+        setTransportMode(selectedTransport);
 
-    <!-- Open Source Section -->
-    <section class="open-source" id="open-source">
-        <div class="section-container">
-            <div class="open-source-grid">
-                <div class="open-source-text">
-                    <span class="section-label" data-i18n="open.label">Código Aberto</span>
-                    <h2 data-i18n="open.title">Livre, Gratuito e Transparente</h2>
-                    <p data-i18n="open.desc">Este é um projeto de código aberto sob licença MIT. Você pode rodar no seu próprio servidor com total autonomia.</p>
+        // Language switcher
+        function updateLangButtons(lang) {
+            langButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+        }
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetLang = btn.dataset.lang;
+                setLanguage(targetLang);
+                updateLangButtons(targetLang);
+            });
+        });
+        updateLangButtons(getLanguage());
 
-                    <ul class="feature-list">
-                        <li data-i18n="open.item1">Hospede no seu próprio servidor (Docker / Coolify)</li>
-                        <li data-i18n="open.item2">Sem rastreadores ou anúncios</li>
-                        <li data-i18n="open.item3">Sem limites de uso ou assinaturas</li>
-                        <li data-i18n="open.item4">Código auditável no GitHub</li>
-                    </ul>
+        // Session Pre-fill
+        const savedSession = localStorage.getItem('babymonitor-session');
+        if (savedSession) {
+            sessionInput.value = savedSession;
+        }
 
-                    <a href="https://github.com/felschatz/baby-monitor" target="_blank" rel="noopener" class="btn btn-secondary">
-                        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                        </svg>
-                        <span data-i18n="open.button">Ver no GitHub</span>
-                    </a>
-                </div>
+        function navigateToRole(role) {
+            const session = sessionInput.value.trim();
+            const pathMap = { sender: 's', receiver: 'r' };
+            const shortPath = pathMap[role] || role;
+            const queryParams = [];
 
-                <div class="tech-visual">
-                    <div class="tech-card">
-                        <div class="tech-card-icon">🔌</div>
-                        <h4>WebRTC</h4>
-                        <p data-i18n="features.webrtc_title">Transmissão em Tempo Real</p>
-                    </div>
-                    <div class="tech-card">
-                        <div class="tech-card-icon">📡</div>
-                        <h4>Server-Sent Events</h4>
-                        <p>Sinalização Eficiente</p>
-                    </div>
-                    <div class="tech-card">
-                        <div class="tech-card-icon">🟢</div>
-                        <h4>Node.js</h4>
-                        <p>Servidor Leve</p>
-                    </div>
-                    <div class="tech-card">
-                        <div class="tech-card-icon">📱</div>
-                        <h4>PWA</h4>
-                        <p data-i18n="features.pwa_title">Instalável como App</p>
-                    </div>
-                    <div class="tech-card">
-                        <div class="tech-card-icon">🌐</div>
-                        <h4>Vanilla JS</h4>
-                        <p>Sem frameworks pesados</p>
-                    </div>
-                    <div class="tech-card">
-                        <div class="tech-card-icon">🔒</div>
-                        <h4>HTTPS Ready</h4>
-                        <p data-i18n="features.privacy_title">Privacidade Absoluta</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+            if (role === 'sender') {
+                queryParams.push(`q=${selectedQuality}`);
+            }
+            if (role === 'sender' && selectedMode === 'audio') {
+                queryParams.push('mode=audio');
+            }
+            if (role === 'sender' && selectedTransport === 'relay') {
+                queryParams.push('transport=relay');
+            }
 
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="section-container">
-            <div class="cta-content">
-                <h2 data-i18n="cta.title">Pronto para começar?</h2>
-                <p data-i18n="cta.desc">Configure a babá eletrônica agora mesmo direto pelo navegador.</p>
-                <a href="/start.html" class="btn btn-primary">
-                    <span data-i18n="cta.button">Iniciar Babá Eletrônica</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </section>
+            const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <a href="/" class="footer-logo" data-i18n="app.title">Babá Eletrônica</a>
-
-            <div class="footer-links">
-                <a href="/start.html" data-i18n="nav.get_started">Começar Agora</a>
-                <a href="#features" data-i18n="nav.features">Recursos</a>
-                <a href="#how-it-works" data-i18n="nav.how_it_works">Como Funciona</a>
-                <a href="https://github.com/felschatz/baby-monitor" target="_blank" rel="noopener" data-i18n="nav.github">GitHub</a>
-            </div>
-
-            <div class="footer-social">
-                <a href="https://github.com/felschatz/baby-monitor" target="_blank" rel="noopener" aria-label="GitHub">
-                    <svg viewBox="0 0 16 16">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </footer>
-
-    <script type="module" src="/js/i18n.js"></script>
-    <script>
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
+            if (!session) {
+                window.location.href = `/${role}${queryString}`;
             } else {
-                navbar.classList.remove('scrolled');
+                localStorage.setItem('babymonitor-session', session);
+                window.location.href = `/${shortPath}/${encodeURIComponent(session)}${queryString}`;
+            }
+        }
+
+        senderBtn.addEventListener('click', () => navigateToRole('sender'));
+        receiverBtn.addEventListener('click', () => navigateToRole('receiver'));
+
+        sessionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                senderBtn.focus();
             }
         });
 
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+        async function checkStatus() {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusTitle = document.getElementById('statusTitle');
+            const statusDetail = document.getElementById('statusDetail');
+
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+
+                if (data.activeSessions > 0) {
+                    statusIndicator.classList.add('active');
+                    statusTitle.textContent = `${data.activeSessions} ${t('start.sender_active')}`;
+                    statusDetail.textContent = t('start.receivers_count', { count: data.totalReceivers });
+                } else {
+                    statusIndicator.classList.remove('active');
+                    statusTitle.textContent = t('start.session_idle');
+                    statusDetail.textContent = t('start.session_hint');
                 }
-            });
+            } catch (err) {
+                statusIndicator.classList.remove('active');
+                statusTitle.textContent = t('start.connecting_server');
+                statusDetail.textContent = t('start.checking_status');
+            }
+        }
+
+        onLanguageChange(() => {
+            updateLangButtons(getLanguage());
+            checkStatus();
         });
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenuBtn.classList.toggle('active');
-            navLinks.classList.toggle('open');
-        });
-
-        // Close menu when clicking a link
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenuBtn.classList.remove('active');
-                navLinks.classList.remove('open');
-            });
-        });
-
-        // Intersection Observer for scroll animations
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -20px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Animate elements by section (reset delay for each section)
-        const sections = [
-            { selector: '.feature-card', parent: '.features-grid' },
-            { selector: '.step', parent: '.steps' },
-            { selector: '.tech-card', parent: '.tech-visual' }
-        ];
-
-        sections.forEach(({ selector, parent }) => {
-            const container = document.querySelector(parent);
-            if (!container) return;
-            container.querySelectorAll(selector).forEach((el, i) => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                el.style.transition = `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${i * 0.05}s`;
-                observer.observe(el);
-            });
-        });
+        checkStatus();
+        setInterval(checkStatus, 5000);
     </script>
 </body>
 </html>
