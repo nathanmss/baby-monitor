@@ -161,4 +161,82 @@ test.describe('Olho de Sauron Baby - Video Rotation, Lock & Responsive UI', () =
     expect(lockBox.width).toBeGreaterThanOrEqual(44);
     expect(lockBox.height).toBeGreaterThanOrEqual(44);
   });
+
+  test('screen size controls allow choosing Fit, Fill, and Zoom levels with persistence', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/r/test-screen-sizes');
+
+    const screenSizeBtn = page.locator('#screenSizeBtn');
+    const screenSizeBadge = page.locator('#screenSizeBadge');
+    const remoteVideo = page.locator('#remoteVideo');
+
+    await expect(screenSizeBtn).toBeVisible();
+    await expect(screenSizeBadge).toHaveText('Fit');
+    await expect(remoteVideo).toHaveCSS('object-fit', 'contain');
+
+    // 1. Cycle to Fill
+    await screenSizeBtn.click();
+    await expect(screenSizeBadge).toHaveText('Fill');
+    await expect(remoteVideo).toHaveCSS('object-fit', 'cover');
+
+    // 2. Cycle to 1.25x
+    await screenSizeBtn.click();
+    await expect(screenSizeBadge).toHaveText('1.25x');
+    expect(await remoteVideo.evaluate((el) => el.style.transform)).toContain('scale(1.25)');
+
+    // 3. Cycle to 1.5x
+    await screenSizeBtn.click();
+    await expect(screenSizeBadge).toHaveText('1.5x');
+    expect(await remoteVideo.evaluate((el) => el.style.transform)).toContain('scale(1.5)');
+
+    // 4. Cycle to 2x
+    await screenSizeBtn.click();
+    await expect(screenSizeBadge).toHaveText('2x');
+    expect(await remoteVideo.evaluate((el) => el.style.transform)).toContain('scale(2)');
+
+    // Verify localStorage persistence
+    const savedFit = await page.evaluate(() => localStorage.getItem('sauron-video-fit'));
+    const savedZoom = await page.evaluate(() => localStorage.getItem('sauron-video-zoom'));
+    expect(savedFit).toBe('fill');
+    expect(savedZoom).toBe('2');
+
+    // Reload page and verify persistence
+    await page.reload();
+    await expect(screenSizeBadge).toHaveText('2x');
+    await expect(remoteVideo).toHaveCSS('object-fit', 'cover');
+    expect(await remoteVideo.evaluate((el) => el.style.transform)).toContain('scale(2)');
+  });
+
+  test('rotated video in 90 and 270 degrees occupies maximum screen dimensions without shrinking', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/r/test-rotated-large');
+
+    const rotateBtn = page.locator('#rotateBtn');
+    const remoteVideo = page.locator('#remoteVideo');
+
+    // Rotate to 270deg
+    await rotateBtn.click(); // 90°
+    await rotateBtn.click(); // 180°
+    await rotateBtn.click(); // 270°
+
+    await page.waitForTimeout(400);
+
+    // Verify physical width and height swapped to match container bounds (800x1280)
+    const dimensions = await remoteVideo.evaluate((el) => {
+      const rect = el.getBoundingClientRect();
+      return {
+        styleWidth: el.style.width,
+        styleHeight: el.style.height,
+        rectWidth: rect.width,
+        rectHeight: rect.height
+      };
+    });
+
+    // In a 1280x800 screen, the rotated element has physical width 800 and height 1280
+    // When rotated 270deg, its bounding box expands to fill the entire 1280x800 screen!
+    expect(dimensions.styleWidth).toBe('800px');
+    expect(dimensions.styleHeight).toBe('1280px');
+    expect(dimensions.rectWidth).toBeCloseTo(1280, 0);
+    expect(dimensions.rectHeight).toBeCloseTo(800, 0);
+  });
 });

@@ -79,6 +79,21 @@ test.describe('Olho de Sauron Baby - Tablet Visual Screenshots & Verification', 
     }
     await page.waitForTimeout(400); // Wait for close transition
 
+    // 2b. Rotate to 270deg and capture large view
+    await rotateBtn.click(); // 90°
+    await rotateBtn.click(); // 180°
+    await rotateBtn.click(); // 270°
+    await page.waitForTimeout(400);
+
+    await page.screenshot({
+      path: path.join(screenshotsDir, 'receiver-rotated-270-landscape.png'),
+      fullPage: false
+    });
+
+    // Reset back to 0°
+    await rotateBtn.click(); // 0°
+    await page.waitForTimeout(400);
+
     // 3. Tablet Portrait (800x1280)
     await page.setViewportSize({ width: 800, height: 1280 });
     await page.waitForTimeout(200);

@@ -56,6 +56,10 @@ html, body {
 }
 
 #remoteVideo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -417,6 +421,48 @@ html, body {
     pointer-events: none;
 }
 
+/* Screen Size Button */
+.screen-size-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.screen-size-btn:hover {
+    background: var(--accent-amber-subtle);
+    border-color: var(--border-focus);
+    color: var(--text-primary);
+}
+
+.screen-size-btn:active {
+    transform: scale(0.96);
+}
+
+.screen-size-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
+.screen-size-badge {
+    font-size: 0.725rem;
+    font-weight: 700;
+    color: var(--accent-amber);
+    pointer-events: none;
+}
+
 /* Lock Button */
 .lock-toggle {
     display: flex;
@@ -535,6 +581,7 @@ body.ui-locked .floating-info-strip,
 body.ui-locked .controls-drawer,
 body.ui-locked #pttBtn,
 body.ui-locked #rotateBtn,
+body.ui-locked #screenSizeBtn,
 body.ui-locked #drawerToggle,
 body.ui-locked #reloadBtn,
 body.ui-locked .back-link {
@@ -664,6 +711,40 @@ body.drawer-open .controls-drawer {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin-bottom: 8px;
+}
+
+.segmented-control {
+    display: flex;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 3px;
+    gap: 3px;
+    margin-top: 6px;
+}
+
+.segmented-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-radius: 9px;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+}
+
+.segmented-btn.active {
+    background: var(--accent-amber);
+    color: #09090b;
+}
+
+.segmented-btn:not(.active):hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .control-row {

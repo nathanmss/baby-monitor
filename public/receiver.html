@@ -14,7 +14,7 @@
     <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
     <link rel="apple-touch-icon" href="/icons/icon.svg">
 
-    <link rel="stylesheet" href="/receiver.css?v=sauron2">
+    <link rel="stylesheet" href="/receiver.css?v=sauron3">
 </head>
 <body class="immersive-monitor">
     <!-- Session prompt overlay -->
@@ -101,6 +101,17 @@
             <span class="rotate-angle-badge" id="rotateAngleBadge">0°</span>
         </button>
 
+        <!-- Screen Size / Fit & Zoom Button -->
+        <button class="screen-size-btn" id="screenSizeBtn" type="button" aria-label="Tamanho da tela" title="Tamanho da tela (Ajustar / Preencher / Zoom)">
+            <svg class="screen-size-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <polyline points="9 21 3 21 3 15"></polyline>
+                <line x1="21" y1="3" x2="14" y2="10"></line>
+                <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+            <span class="screen-size-badge" id="screenSizeBadge">Fit</span>
+        </button>
+
         <!-- Lock Button -->
         <button class="lock-toggle" id="lockBtn" type="button" aria-pressed="false" aria-label="Bloquear controles" title="Bloquear controles">
             <span class="lock-toggle-icon"></span>
@@ -149,6 +160,26 @@
             <div class="settings-modal-header">
                 <h3>Ajustes do Monitor</h3>
                 <button type="button" class="close-drawer-btn" id="closeDrawerBtn" aria-label="Fechar">✕</button>
+            </div>
+
+            <!-- Framing & Zoom Controls -->
+            <div class="control-section">
+                <label class="control-label">Enquadramento da Imagem</label>
+                <div class="segmented-control screen-fit-segmented">
+                    <button type="button" class="segmented-btn fit-mode-btn active" data-fit="fit">Ajustar (Fit)</button>
+                    <button type="button" class="segmented-btn fit-mode-btn" data-fit="fill">Preencher (Fill)</button>
+                </div>
+                <div class="control-hint">Preencher expande a imagem para eliminar barras pretas</div>
+            </div>
+
+            <div class="control-section">
+                <label class="control-label">Zoom da Imagem</label>
+                <div class="segmented-control zoom-segmented">
+                    <button type="button" class="segmented-btn zoom-btn active" data-zoom="1">1x</button>
+                    <button type="button" class="segmented-btn zoom-btn" data-zoom="1.25">1.25x</button>
+                    <button type="button" class="segmented-btn zoom-btn" data-zoom="1.5">1.5x</button>
+                    <button type="button" class="segmented-btn zoom-btn" data-zoom="2">2x</button>
+                </div>
             </div>
 
             <div class="audio-meter">
@@ -253,6 +284,6 @@
         </div>
     </div>
 
-    <script type="module" src="/js/receiver-app.js?v=sauron2"></script>
+    <script type="module" src="/js/receiver-app.js?v=sauron3"></script>
 </body>
 </html>

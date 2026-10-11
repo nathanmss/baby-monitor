@@ -88,6 +88,8 @@ const lockBtn = document.getElementById('lockBtn');
 const lockBtnText = document.getElementById('lockBtnText');
 const rotateBtn = document.getElementById('rotateBtn');
 const rotateAngleBadge = document.getElementById('rotateAngleBadge');
+const screenSizeBtn = document.getElementById('screenSizeBtn');
+const screenSizeBadge = document.getElementById('screenSizeBadge');
 const reloadBtn = document.getElementById('reloadBtn');
 const info = document.getElementById('info');
 const thresholdMarker = document.getElementById('thresholdMarker');
@@ -1384,57 +1386,101 @@ if (reloadBtn) {
     });
 }
 
-// Video Rotation Management (Client-Side, zero-reencoding)
+// Video Rotation & Screen Size / Framing Management
 const ROTATION_STORAGE_KEY = 'sauron-video-rotation';
+const FIT_STORAGE_KEY = 'sauron-video-fit';
+const ZOOM_STORAGE_KEY = 'sauron-video-zoom';
 const VALID_ROTATIONS = [0, 90, 180, 270];
 
 let currentRotation = 0;
+let currentFit = 'fit'; // 'fit' (contain) or 'fill' (cover)
+let currentZoom = 1;
+
 try {
     const savedRotation = parseInt(localStorage.getItem(ROTATION_STORAGE_KEY) || '0', 10);
     if (VALID_ROTATIONS.includes(savedRotation)) {
         currentRotation = savedRotation;
     }
+    const savedFit = localStorage.getItem(FIT_STORAGE_KEY);
+    if (savedFit === 'fit' || savedFit === 'fill') {
+        currentFit = savedFit;
+    }
+    const savedZoom = parseFloat(localStorage.getItem(ZOOM_STORAGE_KEY) || '1');
+    if (!isNaN(savedZoom) && savedZoom >= 1 && savedZoom <= 2) {
+        currentZoom = savedZoom;
+    }
 } catch (e) {
-    console.warn('Unable to read rotation from localStorage:', e);
+    console.warn('Unable to read video layout settings from localStorage:', e);
 }
 
-function applyVideoRotation(angle) {
-    if (!remoteVideo || !videoContainer) return;
+const fitModeBtns = document.querySelectorAll('.fit-mode-btn');
+const zoomBtns = document.querySelectorAll('.zoom-btn');
 
-    currentRotation = VALID_ROTATIONS.includes(angle) ? angle : 0;
-
+function updateScreenSizeUi() {
+    if (screenSizeBadge) {
+        if (currentZoom > 1) {
+            screenSizeBadge.textContent = `${currentZoom}x`;
+        } else if (currentFit === 'fill') {
+            screenSizeBadge.textContent = 'Fill';
+        } else {
+            screenSizeBadge.textContent = 'Fit';
+        }
+    }
     if (rotateAngleBadge) {
         rotateAngleBadge.textContent = `${currentRotation}°`;
     }
-
     if (rotateBtn) {
         rotateBtn.setAttribute('data-angle', String(currentRotation));
         rotateBtn.title = `Rotacionar vídeo (${currentRotation}°)`;
     }
 
-    // Keep layout flow bounds at 100% so scrollHeight / scrollWidth never exceed client bounds
-    remoteVideo.style.width = '100%';
-    remoteVideo.style.height = '100%';
-    remoteVideo.style.maxWidth = '100%';
-    remoteVideo.style.maxHeight = '100%';
+    fitModeBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.fit === currentFit);
+    });
+    zoomBtns.forEach(btn => {
+        btn.classList.toggle('active', parseFloat(btn.dataset.zoom) === currentZoom);
+    });
+}
 
-    if (currentRotation === 90 || currentRotation === 270) {
-        const containerRect = videoContainer.getBoundingClientRect();
-        const cWidth = containerRect.width;
-        const cHeight = containerRect.height;
+function applyVideoFraming() {
+    if (!remoteVideo || !videoContainer) return;
 
-        let scale = 1;
+    const isRotated = (currentRotation === 90 || currentRotation === 270);
+    const containerRect = videoContainer.getBoundingClientRect();
+    const cWidth = containerRect.width;
+    const cHeight = containerRect.height;
+
+    // Apply object-fit: contain (Fit) or cover (Fill)
+    remoteVideo.style.objectFit = currentFit === 'fill' ? 'cover' : 'contain';
+
+    if (isRotated) {
+        // Swap width and height so the rotated element matches the container's visual bounding box
         if (cWidth > 0 && cHeight > 0) {
-            scale = Math.min(cWidth / cHeight, cHeight / cWidth);
+            remoteVideo.style.width = `${cHeight}px`;
+            remoteVideo.style.height = `${cWidth}px`;
+            remoteVideo.style.maxWidth = 'none';
+            remoteVideo.style.maxHeight = 'none';
         }
-
-        remoteVideo.style.transform = `rotate(${currentRotation}deg) scale(${scale})`;
     } else {
-        remoteVideo.style.transform = `rotate(${currentRotation}deg)`;
+        remoteVideo.style.width = '100%';
+        remoteVideo.style.height = '100%';
+        remoteVideo.style.maxWidth = '100%';
+        remoteVideo.style.maxHeight = '100%';
     }
 
+    // Always center using translate(-50%, -50%) and apply rotation + zoom scale
+    remoteVideo.style.transform = `translate(-50%, -50%) rotate(${currentRotation}deg) scale(${currentZoom})`;
     remoteVideo.setAttribute('data-rotation', String(currentRotation));
+    remoteVideo.setAttribute('data-fit', currentFit);
+    remoteVideo.setAttribute('data-zoom', String(currentZoom));
     videoContainer.setAttribute('data-rotation', String(currentRotation));
+
+    updateScreenSizeUi();
+}
+
+function applyVideoRotation(angle) {
+    currentRotation = VALID_ROTATIONS.includes(angle) ? angle : 0;
+    applyVideoFraming();
 }
 
 function cycleVideoRotation() {
@@ -1448,33 +1494,75 @@ function cycleVideoRotation() {
     }
 }
 
+// Preset cycle for quick Screen Size button: Fit (1x) -> Fill (1x) -> 1.25x -> 1.5x -> 2x -> Fit (1x)
+const SCREEN_SIZE_PRESETS = [
+    { fit: 'fit', zoom: 1 },
+    { fit: 'fill', zoom: 1 },
+    { fit: 'fill', zoom: 1.25 },
+    { fit: 'fill', zoom: 1.5 },
+    { fit: 'fill', zoom: 2 }
+];
+
+function cycleScreenSize() {
+    if (uiLocked) return;
+    let currentIndex = SCREEN_SIZE_PRESETS.findIndex(p => p.fit === currentFit && p.zoom === currentZoom);
+    if (currentIndex === -1) currentIndex = 0;
+    const nextIndex = (currentIndex + 1) % SCREEN_SIZE_PRESETS.length;
+    const next = SCREEN_SIZE_PRESETS[nextIndex];
+    setScreenSize(next.fit, next.zoom);
+}
+
+function setScreenSize(fit, zoom) {
+    currentFit = (fit === 'fill' ? 'fill' : 'fit');
+    currentZoom = (typeof zoom === 'number' && zoom >= 1 && zoom <= 2) ? zoom : 1;
+    applyVideoFraming();
+    try {
+        localStorage.setItem(FIT_STORAGE_KEY, currentFit);
+        localStorage.setItem(ZOOM_STORAGE_KEY, String(currentZoom));
+    } catch (e) {
+        console.warn('Unable to persist screen size to localStorage:', e);
+    }
+}
+
 if (rotateBtn) {
     rotateBtn.addEventListener('click', cycleVideoRotation);
 }
 
+if (screenSizeBtn) {
+    screenSizeBtn.addEventListener('click', cycleScreenSize);
+}
+
+fitModeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        setScreenSize(btn.dataset.fit, currentZoom);
+    });
+});
+
+zoomBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        setScreenSize(currentFit, parseFloat(btn.dataset.zoom));
+    });
+});
+
 if (remoteVideo) {
     remoteVideo.addEventListener('loadedmetadata', () => {
-        applyVideoRotation(currentRotation);
+        applyVideoFraming();
     });
 }
 
 if (typeof ResizeObserver !== 'undefined' && videoContainer) {
     const rotationResizeObserver = new ResizeObserver(() => {
-        if (currentRotation === 90 || currentRotation === 270) {
-            applyVideoRotation(currentRotation);
-        }
+        applyVideoFraming();
     });
     rotationResizeObserver.observe(videoContainer);
 }
 
 window.addEventListener('resize', () => {
-    if (currentRotation === 90 || currentRotation === 270) {
-        applyVideoRotation(currentRotation);
-    }
+    applyVideoFraming();
 });
 
-// Apply initial rotation immediately
-applyVideoRotation(currentRotation);
+// Apply initial setup immediately
+applyVideoFraming();
 
 lockBtn.addEventListener('click', () => {
     if (uiLocked) return;
