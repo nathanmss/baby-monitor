@@ -1,0 +1,49 @@
+{
+  "name": "BabySauron",
+  "short_name": "BabySauron",
+  "description": "Monitor inteligente de bebê em tempo real - BabySauron",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "lang": "pt-BR",
+  "categories": ["utilities", "lifestyle"],
+  "icons": [
+    {
+      "src": "/assets/babysauron-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "BabySauron - Câmera do Bebê",
+      "short_name": "Câmera",
+      "description": "Transmitir câmera do bebê",
+      "url": "/sender",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "BabySauron - Monitor dos Pais",
+      "short_name": "Monitor",
+      "description": "Abrir monitor dos pais",
+      "url": "/receiver",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

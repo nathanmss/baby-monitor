@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#141418"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </radialGradient>
+
+    <!-- Warm Amber Flame Gradient -->
+    <linearGradient id="flameGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="25%" stop-color="#fbbf24"/>
+      <stop offset="65%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+
+    <!-- Deep Ring Accent Gradient -->
+    <linearGradient id="accentGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+
+    <!-- Cozy Warm Amber Radial Aura inside the Eye -->
+    <radialGradient id="warmAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.45"/>
+      <stop offset="45%" stop-color="#d97706" stop-opacity="0.22"/>
+      <stop offset="75%" stop-color="#b45309" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#09090b" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Inner Pupil Deep Gradient -->
+    <radialGradient id="pupilCore" cx="45%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#1c1917"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </radialGradient>
+
+    <!-- Soft Glow Filter -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- App Icon Squircle Background -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" stroke="rgba(255, 255, 255, 0.06)" stroke-width="2"/>
+
+  <!-- Warm Central Glow -->
+  <ellipse cx="256" cy="256" rx="190" ry="125" fill="url(#warmAura)" filter="url(#softGlow)"/>
+
+  <!-- Outer Geometric Sauron Mandorla / Flame Wings -->
+  <!-- Top Flame Crown -->
+  <path d="M 256 68 
+           C 264 105, 280 135, 308 160
+           C 350 180, 400 215, 448 256
+           C 396 298, 344 336, 304 356
+           C 278 380, 264 410, 256 444
+           C 248 410, 234 380, 208 356
+           C 168 336, 116 298, 64 256
+           C 112 215, 162 180, 204 160
+           C 232 135, 248 105, 256 68 Z" 
+        fill="none" 
+        stroke="url(#flameGrad)" 
+        stroke-width="5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Inner Dynamic Flame Blades (Top & Bottom Horns styling) -->
+  <path d="M 256 94 
+           C 260 120, 272 142, 292 162 
+           C 340 188, 386 220, 424 256
+           C 384 292, 336 326, 288 352
+           C 270 372, 258 394, 256 418
+           C 254 394, 242 372, 224 352
+           C 176 326, 128 292, 88 256
+           C 126 220, 172 188, 220 162
+           C 240 142, 252 120, 256 94 Z" 
+        fill="none" 
+        stroke="url(#accentGrad)" 
+        stroke-width="3" 
+        opacity="0.85"/>
+
+  <!-- Sauron Almond Rim (Primary Horizon) -->
+  <path d="M 96 256
+           C 144 195, 200 160, 256 160
+           C 312 160, 368 195, 416 256
+           C 368 317, 312 352, 256 352
+           C 200 352, 144 317, 96 256 Z"
+        fill="rgba(24, 24, 28, 0.45)"
+        stroke="url(#flameGrad)"
+        stroke-width="4"/>
+
+  <!-- Central Pupil Pod: Silhouette of Sleeping Baby in Swaddle Cocoon -->
+  <!-- Outer Pupil Contour (Sauron Slit formed by Swaddled Baby profile) -->
+  <path d="M 256 168
+           C 272 168, 286 182, 286 200
+           C 286 210, 282 220, 276 228
+           C 284 242, 288 262, 284 286
+           C 278 318, 266 338, 256 344
+           C 246 338, 234 318, 228 286
+           C 224 262, 228 242, 236 228
+           C 230 220, 226 210, 226 200
+           C 226 182, 240 168, 256 168 Z"
+        fill="url(#pupilCore)"
+        stroke="#f59e0b"
+        stroke-width="2.5"
+        filter="url(#softGlow)"/>
+
+  <!-- Baby Head & Features inside Pupil -->
+  <!-- Cute Baby Head Silhouette Circle -->
+  <circle cx="256" cy="204" r="23" fill="#292524" stroke="rgba(245, 158, 11, 0.4)" stroke-width="1.5"/>
+
+  <!-- Sleeping Baby Curved Eye (Serene Arc) -->
+  <path d="M 251 202 Q 256 207 262 202" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Cute Baby Peaceful Brow / Forehead Accent -->
+  <path d="M 249 196 Q 255 194 261 196" fill="none" stroke="rgba(251, 191, 36, 0.4)" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Soft Baby Cheek Highlight -->
+  <circle cx="249" cy="208" r="3" fill="#f59e0b" opacity="0.6"/>
+
+  <!-- Cute Baby Swaddle Wrap Folds (Diagonal Swaddle Lines) -->
+  <!-- Swaddle Fold 1 (Left to Right) -->
+  <path d="M 238 234 Q 254 248 274 240" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+  <!-- Swaddle Fold 2 (Right to Left) -->
+  <path d="M 274 250 Q 256 266 236 260" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>
+  <!-- Swaddle Fold 3 (Left wrap) -->
+  <path d="M 239 274 Q 254 286 272 280" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+  <!-- Swaddle Bottom Cocoon Tail -->
+  <path d="M 246 298 Q 256 314 266 300" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- Subtle Starlight / Gentle Protective Sparkles around Eye -->
+  <circle cx="160" cy="180" r="2.5" fill="#fbbf24" opacity="0.6"/>
+  <circle cx="352" cy="180" r="2.5" fill="#fbbf24" opacity="0.6"/>
+  <circle cx="140" cy="270" r="2" fill="#f59e0b" opacity="0.5"/>
+  <circle cx="372" cy="270" r="2" fill="#f59e0b" opacity="0.5"/>
+</svg>

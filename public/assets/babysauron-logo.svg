@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 560" width="512" height="560">
+  <defs>
+    <!-- Warm Amber Flame Gradient -->
+    <linearGradient id="logoFlameGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="25%" stop-color="#fbbf24"/>
+      <stop offset="65%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+
+    <!-- Deep Ring Accent Gradient -->
+    <linearGradient id="logoAccentGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#d97706"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+
+    <!-- Cozy Warm Amber Radial Aura inside the Eye -->
+    <radialGradient id="logoWarmAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.45"/>
+      <stop offset="45%" stop-color="#d97706" stop-opacity="0.22"/>
+      <stop offset="75%" stop-color="#b45309" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#09090b" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Inner Pupil Deep Gradient -->
+    <radialGradient id="logoPupilCore" cx="45%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#1c1917"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </radialGradient>
+
+    <!-- Soft Glow Filter -->
+    <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- ================= SYMBOL ================= -->
+  <g id="sauron-eye-symbol" transform="translate(0, -10)">
+    <!-- Warm Central Glow -->
+    <ellipse cx="256" cy="230" rx="190" ry="120" fill="url(#logoWarmAura)" filter="url(#logoGlow)"/>
+
+    <!-- Outer Geometric Sauron Mandorla / Flame Wings -->
+    <path d="M 256 50 
+             C 264 85, 280 115, 308 140
+             C 350 160, 400 195, 448 230
+             C 396 268, 344 306, 304 326
+             C 278 350, 264 380, 256 410
+             C 248 380, 234 350, 208 326
+             C 168 306, 116 268, 64 230
+             C 112 195, 162 160, 204 140
+             C 232 115, 248 85, 256 50 Z" 
+          fill="none" 
+          stroke="url(#logoFlameGrad)" 
+          stroke-width="5" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+
+    <!-- Inner Dynamic Flame Blades (Stylized Horns) -->
+    <path d="M 256 76 
+             C 260 102, 272 124, 292 144 
+             C 340 170, 386 200, 424 230
+             C 384 262, 336 296, 288 322
+             C 270 342, 258 364, 256 388
+             C 254 364, 242 342, 224 322
+             C 176 296, 128 262, 88 230
+             C 126 200, 172 170, 220 144
+             C 240 124, 252 102, 256 76 Z" 
+          fill="none" 
+          stroke="url(#logoAccentGrad)" 
+          stroke-width="3" 
+          opacity="0.85"/>
+
+    <!-- Sauron Almond Rim (Primary Horizon) -->
+    <path d="M 96 230
+             C 144 172, 200 140, 256 140
+             C 312 140, 368 172, 416 230
+             C 368 288, 312 320, 256 320
+             C 200 320, 144 288, 96 230 Z"
+          fill="rgba(20, 20, 24, 0.55)"
+          stroke="url(#logoFlameGrad)"
+          stroke-width="4"/>
+
+    <!-- Central Pupil: Swaddled Sleeping Baby Silhouette -->
+    <path d="M 256 148
+             C 272 148, 286 162, 286 178
+             C 286 188, 282 198, 276 205
+             C 284 219, 288 239, 284 262
+             C 278 292, 266 310, 256 316
+             C 246 310, 234 292, 228 262
+             C 224 239, 228 219, 236 205
+             C 230 198, 226 188, 226 178
+             C 226 162, 240 148, 256 148 Z"
+          fill="url(#logoPupilCore)"
+          stroke="#f59e0b"
+          stroke-width="2.5"
+          filter="url(#logoGlow)"/>
+
+    <!-- Baby Head Circle -->
+    <circle cx="256" cy="182" r="21" fill="#292524" stroke="rgba(245, 158, 11, 0.4)" stroke-width="1.5"/>
+
+    <!-- Sleeping Baby Curved Eye Arc -->
+    <path d="M 251 180 Q 256 185 262 180" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Sleeping Baby Brow -->
+    <path d="M 249 174 Q 255 172 261 174" fill="none" stroke="rgba(251, 191, 36, 0.4)" stroke-width="1.5" stroke-linecap="round"/>
+
+    <!-- Soft Baby Cheek Highlight -->
+    <circle cx="250" cy="186" r="2.8" fill="#f59e0b" opacity="0.65"/>
+
+    <!-- Swaddle Wrap Folds -->
+    <path d="M 239 209 Q 254 222 273 214" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+    <path d="M 273 224 Q 256 238 237 232" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>
+    <path d="M 240 246 Q 254 257 271 251" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+    <path d="M 246 268 Q 256 282 266 270" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+  </g>
+
+  <!-- ================= TYPOGRAPHY ================= -->
+  <g id="wordmark" transform="translate(256, 492)" text-anchor="middle">
+    <!-- Main "BabySauron" Title -->
+    <text font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif" font-size="44" letter-spacing="-0.5">
+      <tspan fill="#f4f4f5" font-weight="300">Baby</tspan><tspan fill="url(#logoFlameGrad)" font-weight="700">Sauron</tspan>
+    </text>
+    <!-- Minimal Subtitle Tagline -->
+    <text y="30" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif" font-size="13" font-weight="600" fill="#71717a" letter-spacing="4">
+      MONITOR INTELIGENTE
+    </text>
+  </g>
+</svg>

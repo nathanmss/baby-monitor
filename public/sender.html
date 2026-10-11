@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title data-i18n="sender.title">Olho de Sauron Baby - Câmera do Bebê</title>
+    <title data-i18n="sender.title">BabySauron - Câmera do Bebê</title>
     
     <!-- PWA & Mobile Meta Tags -->
     <meta name="theme-color" content="#09090b">
@@ -11,8 +11,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
-    <link rel="apple-touch-icon" href="/icons/icon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/svg+xml" href="/assets/babysauron-icon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
     <link rel="stylesheet" href="/sender.css">
 </head>
@@ -40,8 +42,11 @@
     </div>
 
     <div class="header">
-        <a href="/" class="back-link" title="Voltar">←</a>
-        <h2 data-i18n="sender.header_title">Câmera do Bebê</h2>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <a href="/" class="back-link" title="Voltar">←</a>
+            <img src="/assets/babysauron-icon.svg" alt="BabySauron" width="22" height="22" style="border-radius: 6px;">
+            <h2 data-i18n="sender.header_title">Câmera do Bebê</h2>
+        </div>
         <div class="status-indicator">
             <div class="status-dot" id="statusDot"></div>
             <span id="statusText" data-i18n="sender.disconnected">Desconectado</span>

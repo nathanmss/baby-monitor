@@ -1,7 +1,7 @@
 {
-  "name": "Olho de Sauron Baby",
-  "short_name": "Olho de Sauron Baby",
-  "description": "Monitor de bebê em tempo real - Olho de Sauron Baby",
+  "name": "BabySauron",
+  "short_name": "BabySauron",
+  "description": "Monitor inteligente de bebê em tempo real - BabySauron",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -12,19 +12,19 @@
   "categories": ["utilities", "lifestyle"],
   "icons": [
     {
-      "src": "/icons/icon.svg",
+      "src": "/assets/babysauron-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/icon-192.png",
+      "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -32,18 +32,18 @@
   ],
   "shortcuts": [
     {
-      "name": "Olho de Sauron Baby - Câmera",
+      "name": "BabySauron - Câmera do Bebê",
       "short_name": "Câmera",
-      "description": "Abrir câmera do bebê",
+      "description": "Transmitir câmera do bebê",
       "url": "/sender",
-      "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Olho de Sauron Baby - Monitor",
+      "name": "BabySauron - Monitor dos Pais",
       "short_name": "Monitor",
       "description": "Abrir monitor dos pais",
       "url": "/receiver",
-      "icons": [{ "src": "/icons/icon.svg", "sizes": "any" }]
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }

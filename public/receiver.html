@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title data-i18n="receiver.title">Olho de Sauron Baby - Monitor dos Pais</title>
+    <title data-i18n="receiver.title">BabySauron - Monitor dos Pais</title>
     
     <!-- PWA & Mobile Meta Tags -->
     <meta name="theme-color" content="#09090b">
@@ -11,10 +11,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="/manifest.webmanifest">
-    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
-    <link rel="apple-touch-icon" href="/icons/icon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/svg+xml" href="/assets/babysauron-icon.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-    <link rel="stylesheet" href="/receiver.css?v=sauron3">
+    <link rel="stylesheet" href="/receiver.css?v=sauron4">
 </head>
 <body class="immersive-monitor">
     <!-- Session prompt overlay -->
@@ -63,6 +65,7 @@
     <header class="floating-header" id="floatingHeader">
         <div class="header-pill left-pill">
             <a href="/" class="back-link" title="Voltar para Início">←</a>
+            <img src="/assets/babysauron-icon.svg" alt="BabySauron" width="22" height="22" style="border-radius: 6px; flex-shrink: 0;">
             <span class="header-brand-title" data-i18n="receiver.header_title">Monitor dos Pais</span>
         </div>
 
@@ -284,6 +287,6 @@
         </div>
     </div>
 
-    <script type="module" src="/js/receiver-app.js?v=sauron3"></script>
+    <script type="module" src="/js/receiver-app.js?v=sauron4"></script>
 </body>
 </html>

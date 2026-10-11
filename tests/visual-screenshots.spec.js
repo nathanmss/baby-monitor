@@ -19,6 +19,7 @@ test.describe('Olho de Sauron Baby - Tablet Visual Screenshots & Verification', 
 
     await expect(page.locator('#senderBtn')).toBeVisible();
     await expect(page.locator('#receiverBtn')).toBeVisible();
+    await expect(page.locator('img[src="/assets/babysauron-icon.svg"]')).toBeVisible();
 
     await page.screenshot({
       path: path.join(screenshotsDir, 'home-tablet-landscape.png'),
@@ -47,6 +48,7 @@ test.describe('Olho de Sauron Baby - Tablet Visual Screenshots & Verification', 
     await expect(floatingHeader).toBeVisible();
     await expect(rotateBtn).toBeVisible();
     await expect(vuMeter).toBeVisible();
+    await expect(page.locator('img[src="/assets/babysauron-icon.svg"]')).toBeVisible();
 
     // Verify HUD is a floating dock (has border-radius >= 24px and bottom positioning)
     const hudRadius = await floatingHud.evaluate((el) => window.getComputedStyle(el).borderRadius);
@@ -109,6 +111,7 @@ test.describe('Olho de Sauron Baby - Tablet Visual Screenshots & Verification', 
     await page.goto('/s/demo-sauron');
 
     await expect(page.locator('#startBtn')).toBeVisible();
+    await expect(page.locator('img[src="/assets/babysauron-icon.svg"]')).toBeVisible();
 
     await page.screenshot({
       path: path.join(screenshotsDir, 'sender-tablet-landscape.png'),

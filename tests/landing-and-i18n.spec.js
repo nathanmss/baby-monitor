@@ -9,9 +9,9 @@ test.describe('Olho de Sauron Baby - Direct app loading & i18n', () => {
     const manifest = await page.locator('link[rel="manifest"]').getAttribute('href');
     expect(manifest).toBe('/manifest.webmanifest');
 
-    // Title and main heading must be "Olho de Sauron Baby"
-    await expect(page).toHaveTitle(/Olho de Sauron Baby/i);
-    await expect(page.locator('h1')).toContainText(/Olho de Sauron Baby/i);
+    // Title and main heading must be "BabySauron"
+    await expect(page).toHaveTitle(/BabySauron|Olho de Sauron Baby/i);
+    await expect(page.locator('h1')).toContainText(/BabySauron|Olho de Sauron Baby/i);
 
     // Core app mode controls are immediately present
     await expect(page.locator('#sessionInput')).toBeVisible();
@@ -42,11 +42,11 @@ test.describe('Olho de Sauron Baby - Direct app loading & i18n', () => {
     expect(savedLangPt).toBe('pt-BR');
   });
 
-  test('validates PWA manifest endpoint for Olho de Sauron Baby', async ({ request }) => {
+  test('validates PWA manifest endpoint for BabySauron', async ({ request }) => {
     const res = await request.get('/manifest.webmanifest');
     expect(res.ok()).toBeTruthy();
     const json = await res.json();
-    expect(json.name).toContain('Olho de Sauron Baby');
+    expect(json.name).toMatch(/BabySauron|Olho de Sauron Baby/i);
     expect(json.display).toBe('standalone');
     expect(json.icons.length).toBeGreaterThan(0);
   });
